@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ứng Dụng Nhân Số Học Toàn Diện</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Tra Cứu Nhân Số Học</h1>
+        <p class="subtitle">Khám phá bản thân qua các chỉ số khoa học</p>
+        
+        <form id="numerologyForm">
+            <div class="form-group">
+                <label for="fullName">Họ và Tên (Khai sinh):</label>
+                <input type="text" id="fullName" placeholder="Ví dụ: NGUYEN VAN A" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="birthDate">Ngày tháng năm sinh:</label>
+                <input type="date" id="birthDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="intentName">Tên Tác Ý (Nếu có / Không bắt buộc):</label>
+                <input type="text" id="intentName" placeholder="Ví dụ: MINH TUE">
+            </div>
+            
+            <button type="submit" id="btnSubmit">Xem Kết Quả Ngay</button>
+        </form>
+
+        <!-- Khu vực hiển thị kết quả -->
+        <div id="resultSection" class="hidden">
+            <hr>
+            <h2>Bản Đồ Chỉ Số Của Bạn</h2>
+            <div class="grid-container">
+                <div class="result-card" onclick="showDetail('duongDoi')">
+                    <h3>Chỉ số Đường Đời</h3>
+                    <p class="number" id="resDuongDoi">-</p>
+                    <small>Bấm để xem chi tiết</small>
+                </div>
+                <div class="result-card" onclick="showDetail('suMenh')">
+                    <h3>Chỉ số Sứ Mệnh</h3>
+                    <p class="number" id="resSuMenh">-</p>
+                    <small>Bấm để xem chi tiết</small>
+                </div>
+                <div class="result-card" onclick="showDetail('linhHon')">
+                    <h3>Chỉ số Linh Hồn</h3>
+                    <p class="number" id="resLinhHon">-</p>
+                    <small>Bấm để xem chi tiết</small>
+                </div>
+                <div class="result-card" onclick="showDetail('nhanCach')">
+                    <h3>Chỉ số Nhân Cách</h3>
+                    <p class="number" id="resNhanCach">-</p>
+                    <small>Bấm để xem chi tiết</small>
+                </div>
+                <div class="result-card" onclick="showDetail('tenGoi')">
+                    <h3>Chỉ số Tên Gọi</h3>
+                    <p class="number" id="resTenGoi">-</p>
+                    <small>Bấm để xem chi tiết</small>
+                </div>
+                <div class="result-card" onclick="showDetail('tenTacY')">
+                    <h3>Chỉ số Tên Tác Ý</h3>
+                    <p class="number" id="resTenTacY">-</p>
+                    <small>Bấm để xem chi tiết</small>
+                </div>
+            </div>
+
+            <!-- Modal Pop-up hiển thị nội dung luận giải giống trang mẫu -->
+            <div id="detailModal" class="modal hidden">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="closeModal()">&times;</span>
+                    <h3 id="modalTitle">Tên Chỉ Số</h3>
+                    <div id="modalBody">
+                        <!-- Nội dung động chèn vào đây -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
