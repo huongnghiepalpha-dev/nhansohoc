@@ -241,7 +241,7 @@ footer span{font-size:12.5px;color:#c7d2f5;}
 .pdf-info>div:last-child{border-right:none;}
 .pdf-info span{display:block;font-size:10.5px;font-weight:700;color:#697089;letter-spacing:1px;margin-bottom:3px;}
 .pdf-info b{font-size:16px;color:#142768;}
-.pdf-sec{color:#142768;font-size:17px;font-weight:800;margin:28px 40px 14px;
+.pdf-sec{color:#142768;font-size:17px;font-weight:800;margin:20px 40px 11px;
   padding-bottom:7px;border-bottom:2px solid #F6B115;}
 .pp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin:0 40px;}
 .pp-cell{border:1.4px solid #e7e9f2;border-radius:11px;padding:13px;text-align:center;background:#fafbff;}
@@ -264,15 +264,15 @@ footer span{font-size:12.5px;color:#c7d2f5;}
 .pdc-tag{flex:none;font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:7px;min-width:118px;text-align:center;color:#fff;}
 .pdc-tag.th{background:#142768;} .pdc-tag.tg{background:#e0990a;} .pdc-tag.tn{background:#1f9d57;}
 .pdc-row span:last-child{font-size:13px;}
-.pdf-line{display:flex;gap:14px;align-items:flex-start;margin:0 40px 9px;
-  background:#fafbff;border:1px solid #eef0f7;border-radius:10px;padding:11px 14px;}
+.pdf-line{display:flex;gap:14px;align-items:flex-start;margin:0 40px 6px;
+  background:#fafbff;border:1px solid #eef0f7;border-radius:10px;padding:9px 14px;}
 .pl-n{flex:none;width:38px;height:38px;border-radius:9px;background:#142768;color:#F6B115;
   font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;}
 .pl-n.w{background:#FFF4D8;color:#e0990a;}
 .pl-t{font-size:13px;line-height:1.5;}
 .pl-t b{color:#142768;}
 .pls-wrap{display:flex;gap:24px;margin:0 40px;align-items:flex-start;}
-.pls-grid{display:grid;grid-template-columns:repeat(3,58px);grid-auto-rows:58px;gap:7px;flex:none;}
+.pls-grid{display:grid;grid-template-columns:repeat(3,54px);grid-auto-rows:54px;gap:6px;flex:none;}
 .pls{border:1.4px solid #e7e9f2;border-radius:10px;background:#fafbff;
   display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#142768;letter-spacing:1px;}
 .pls.on{background:#142768;color:#F6B115;}
@@ -289,6 +289,10 @@ footer span{font-size:12.5px;color:#c7d2f5;}
 .pdf-final p{font-size:13.5px;line-height:1.6;color:#171b2e;}
 .pf-contact{margin-top:12px;font-size:12px;font-weight:700;color:#142768;}
 .pdf-disclaim{font-size:11.5px;font-style:italic;color:#697089;margin:14px 40px 0;text-align:center;}
+.pdf-cta-box{margin:14px 40px 0;background:#FFF4D8;border:1px solid #f0dca0;border-radius:14px;padding:18px 24px;text-align:center;}
+.pcb-title{color:#142768;font-size:16px;font-weight:800;margin-bottom:7px;}
+.pcb-body{font-size:12.5px;line-height:1.55;color:#171b2e;margin-bottom:12px;}
+.pcb-btn{display:inline-block;background:#142768;color:#fff;font-weight:700;font-size:13.5px;padding:10px 24px;border-radius:10px;}
 .pdf-foot{position:absolute;bottom:0;left:0;right:0;background:#142768;color:#fff;
   text-align:center;font-size:11px;padding:9px 10px;}
 .pdf-foot b{color:#fff;}
@@ -1306,7 +1310,6 @@ function buildProfile(){
       (fd.core?'<div class="pdf-blk"><h4>Năng lượng cốt lõi</h4><p>'+plain(fd.core)+'</p></div>':'')+
       (fd.strength?'<div class="pdf-blk"><h4>Điểm mạnh</h4><p>'+plain(fd.strength)+'</p></div>':'')+
       (fd.challenge?'<div class="pdf-blk"><h4>Bài học cần lưu ý</h4><p>'+plain(fd.challenge)+'</p></div>':'')+
-      careerHtml+
       '<h3 class="pdf-sec">Các chỉ số từ họ tên &amp; ngày sinh</h3>'+
       nameRows+
       footer+
@@ -1329,22 +1332,37 @@ function buildProfile(){
   if(!strong.length&&!weak.length)arrows='<p class="pa-none">Các năng lượng phân bố cân bằng, không tạo mũi tên rõ rệt.</p>';
 
   let missHtml='';
-  if(miss.length){miss.forEach(n=>{const dd=NS.soThieu[n];if(dd)missHtml+='<div class="pdf-line"><span class="pl-n w">'+n+'</span><span class="pl-t"><b>'+dd.kw+'</b><br>'+plain(dd.core)+'</span></div>';});}
+  if(miss.length){miss.forEach(n=>{const dd=NS.soThieu[n];if(dd){
+    const t=plain(dd.core).replace(/^Tên em thiếu năng lượng số \d+\.\s*/,'');
+    missHtml+='<div class="pdf-line"><span class="pl-n w">'+n+'</span><span class="pl-t"><b>'+dd.kw+'</b><br>'+t+'</span></div>';
+  }});}
   else missHtml='<p class="pa-none">Tên hội tụ đủ năng lượng 1–9 — nền tảng cân bằng để phát triển toàn diện.</p>';
 
-  const page3=
-    '<div class="pdf-page">'+
-      '<h3 class="pdf-sec">Biểu đồ ngày sinh &amp; mũi tên</h3>'+
-      '<div class="pls-wrap"><div class="pls-grid">'+ls+'</div>'+
-      '<div class="pls-arrows">'+arrows+'</div></div>'+
-      '<h3 class="pdf-sec">Số Thiếu — kỹ năng nên bồi đắp</h3>'+
-      missHtml+
-      '<p class="pdf-disclaim">Nhân số học là công cụ gợi mở để hiểu mình, không phải lời tiên tri. Mỗi con người luôn lớn hơn một con số.</p>'+
-      footer+
+  const loshuBlock=
+    '<h3 class="pdf-sec">Biểu đồ ngày sinh &amp; mũi tên</h3>'+
+    '<div class="pls-wrap"><div class="pls-grid">'+ls+'</div>'+
+    '<div class="pls-arrows">'+arrows+'</div></div>'+
+    '<h3 class="pdf-sec">Số Thiếu — kỹ năng nên bồi đắp</h3>'+missHtml;
+  const careerCtaBlock=
+    careerHtml+
+    '<div class="pdf-cta-box">'+
+      '<div class="pcb-title">Bạn đã sẵn sàng chinh phục trường Đại học mơ ước?</div>'+
+      '<p class="pcb-body">Không chỉ giúp bạn biết mình giỏi điều gì, Alpha còn chỉ ra cách đi đúng hướng bằng các mô hình đánh giá năng lực quốc tế, giúp học sinh THPT khám phá thế mạnh, chọn ngành phù hợp và vững vàng chinh phục các trường đại học hàng đầu.</p>'+
+      '<div class="pcb-btn">Đăng ký tư vấn 1:1 ngay &nbsp;→&nbsp; Hotline: 096 937 4411</div>'+
     '</div>';
+  const disclaimer='<p class="pdf-disclaim">Nhân số học là công cụ gợi mở để hiểu mình, không phải lời tiên tri. Mỗi con người luôn lớn hơn một con số.</p>';
 
-  return '<div class="pdf-doc">'+page1+'<div class="html2pdf__page-break"></div>'+
-         page2+'<div class="html2pdf__page-break"></div>'+page3+'</div>';
+  // Nếu nhiều Số Thiếu (≥5) thì tách Gợi ý hướng nghiệp + CTA sang trang 4 để không bị tràn
+  const PB='<div class="html2pdf__page-break"></div>';
+  let tail;
+  if(miss.length>=5){
+    tail = PB+'<div class="pdf-page">'+loshuBlock+footer+'</div>'+
+           PB+'<div class="pdf-page">'+careerCtaBlock+disclaimer+footer+'</div>';
+  }else{
+    tail = PB+'<div class="pdf-page">'+loshuBlock+careerCtaBlock+disclaimer+footer+'</div>';
+  }
+
+  return '<div class="pdf-doc">'+page1+PB+page2+tail+'</div>';
 }
 
 function exportPDF(){
