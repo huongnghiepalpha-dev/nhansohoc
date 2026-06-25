@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nhân Số Học — Hiểu Mình | Hướng Nghiệp Alpha</title>
-<meta name="description" content="Công cụ Nhân số học của Hướng Nghiệp Alpha giúp học sinh hiểu bản thân và gợi mở hướng nghiệp theo mô hình Holland RIASEC.">
+<meta name="description" content="Công cụ Nhân số học của Hướng Nghiệp Alpha giúp học sinh hiểu bản thân và gợi mở hướng nghiệp theo mô hình Holland và Gardner.">
 <meta property="og:title" content="Nhân Số Học — Hiểu Mình | Hướng Nghiệp Alpha">
 <meta property="og:description" content="Khám phá bản thân và gợi mở hướng nghiệp qua những con số.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -108,6 +108,37 @@ a{color:inherit;}
   padding:2px 6px;border-radius:5px;letter-spacing:.3px;}
 .cell .cnum{font-size:40px;font-weight:900;color:var(--navy);line-height:1;margin:5px 0 4px;}
 .cell .ctap{font-size:11.5px;color:var(--muted);}
+.cell.thieu{border-color:#d9def0;background:linear-gradient(180deg,#fbfcff,#fff);}
+.cnum-set{display:flex;align-items:center;justify-content:center;min-height:40px;}
+.miss-list{font-size:30px;font-weight:900;color:var(--amber-d);letter-spacing:4px;}
+.full-ok{font-size:26px;font-weight:800;color:#1f9d57;}
+.thieu-item{background:var(--paper);border-radius:10px;padding:12px 14px;margin-top:10px;}
+.thieu-item h5{margin:0 0 3px;}
+.thieu-item p{font-size:14px;}
+
+/* Biểu đồ ngày sinh Lo Shu */
+.chart-panel{margin-top:24px;padding:24px;}
+.chart-title{color:var(--navy);font-size:17px;font-weight:800;margin-bottom:4px;text-align:center;}
+.chart-sub{color:var(--muted);font-size:12.5px;text-align:center;margin-bottom:18px;}
+.ls-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:300px;margin:0 auto 20px;}
+.ls-cell{aspect-ratio:1/1;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  border:1.6px solid var(--line);background:#fafbff;}
+.ls-cell.on{background:linear-gradient(135deg,var(--navy),var(--navy-3));border-color:var(--navy);}
+.ls-num{color:var(--amber);font-weight:900;font-size:24px;letter-spacing:1px;}
+.ls-ghost{color:#cfd5e8;font-weight:700;font-size:18px;}
+.arrows{max-width:560px;margin:0 auto;}
+.arrow-group{margin-bottom:14px;}
+.arrow-h{font-weight:800;font-size:13.5px;padding:7px 12px;border-radius:8px;margin-bottom:8px;}
+.arrow-h.strong{background:#e7f6ee;color:#1f9d57;}
+.arrow-h.weak{background:var(--amber-soft);color:var(--amber-d);}
+.arrow-item{display:flex;gap:10px;padding:9px 12px;border-radius:9px;background:#fff;
+  border:1px solid var(--line);margin-bottom:6px;font-size:13.5px;align-items:flex-start;}
+.arrow-item b{flex:none;color:var(--navy);min-width:128px;}
+.arrow-item.s{border-left:4px solid #1f9d57;}
+.arrow-item.w{border-left:4px solid var(--amber);}
+.arrow-item span{color:var(--ink);}
+.arrow-none{text-align:center;color:var(--muted);font-size:13.5px;}
+@media(max-width:480px){.arrow-item{flex-direction:column;gap:2px;}.arrow-item b{min-width:0;}}
 
 .hint{text-align:center;color:var(--muted);font-size:13px;margin:20px 0 0;}
 
@@ -158,6 +189,13 @@ a{color:inherit;}
 .career{background:var(--amber-soft);border-radius:12px;padding:15px 17px;margin-top:18px;}
 .career h5{margin-top:0;}
 .career b{color:var(--navy);}
+.cr-row{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #f0dca0;}
+.cr-row:first-of-type{border-top:none;}
+.cr-tag{flex:none;font-size:11px;font-weight:800;padding:3px 9px;border-radius:7px;min-width:118px;text-align:center;line-height:1.3;}
+.t-holland{background:var(--navy);color:#fff;}
+.t-gardner{background:var(--amber-d);color:#fff;}
+.t-nganh{background:#1f9d57;color:#fff;}
+.cr-val{font-size:14px;color:var(--ink);}
 .note{margin-top:20px;padding:14px 16px;background:var(--paper);
   border-left:4px solid var(--amber);border-radius:8px;font-size:13px;color:var(--muted);}
 
@@ -179,6 +217,81 @@ footer span{font-size:12.5px;color:#c7d2f5;}
   .form-card{padding:22px;}
   .modal-box{padding:24px;}
 }
+
+/* ===== PDF export button ===== */
+.pdf-cta-wrap{text-align:center;margin-top:26px;}
+.btn-pdf{background:var(--navy);color:#fff;border:none;border-radius:12px;
+  padding:15px 30px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;
+  box-shadow:0 8px 22px rgba(20,39,104,.2);transition:transform .12s,background .2s;}
+.btn-pdf:hover{background:var(--navy-3);transform:translateY(-1px);}
+.btn-pdf:disabled{opacity:.7;cursor:wait;}
+.pdf-note{color:var(--muted);font-size:12.5px;margin-top:9px;}
+
+/* ===== PDF document (off-screen render) ===== */
+#pdfRoot{position:absolute;left:-99999px;top:0;width:780px;}
+.pdf-doc{width:780px;background:#fff;font-family:'Be Vietnam Pro',system-ui,sans-serif;color:#171b2e;}
+.pdf-page{width:780px;height:1103px;overflow:hidden;padding-bottom:54px;position:relative;background:#fff;}
+.pdf-header{background:linear-gradient(135deg,#142768,#28287a);color:#fff;
+  display:flex;align-items:center;gap:16px;padding:26px 40px;}
+.pdf-logo{width:50px;height:auto;}
+.pdf-h1{font-size:26px;font-weight:900;letter-spacing:.5px;line-height:1.1;}
+.pdf-h2{font-size:15px;font-weight:600;color:#F6B115;letter-spacing:3px;}
+.pdf-info{display:flex;border:1px solid #e7e9f2;border-radius:12px;margin:26px 40px 0;overflow:hidden;}
+.pdf-info>div{flex:1;padding:14px 18px;border-right:1px solid #e7e9f2;}
+.pdf-info>div:last-child{border-right:none;}
+.pdf-info span{display:block;font-size:10.5px;font-weight:700;color:#697089;letter-spacing:1px;margin-bottom:3px;}
+.pdf-info b{font-size:16px;color:#142768;}
+.pdf-sec{color:#142768;font-size:17px;font-weight:800;margin:28px 40px 14px;
+  padding-bottom:7px;border-bottom:2px solid #F6B115;}
+.pp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin:0 40px;}
+.pp-cell{border:1.4px solid #e7e9f2;border-radius:11px;padding:13px;text-align:center;background:#fafbff;}
+.pp-num{font-size:32px;font-weight:900;color:#142768;line-height:1;}
+.pp-num-sm{font-size:22px;color:#e0990a;letter-spacing:2px;}
+.pp-lbl{font-size:12.5px;font-weight:700;color:#142768;margin-top:5px;}
+.pp-kw{font-size:11px;color:#697089;margin-top:2px;}
+.pdf-feature{display:flex;gap:18px;align-items:center;margin:24px 40px 0;
+  background:linear-gradient(135deg,#142768,#28287a);border-radius:14px;padding:20px 24px;color:#fff;}
+.pf-num{font-size:58px;font-weight:900;color:#F6B115;line-height:.9;flex:none;}
+.pf-lbl{font-size:12px;font-weight:700;color:#9fb0e6;letter-spacing:1px;margin-bottom:5px;}
+.pf-body p{font-size:13.5px;color:#dbe2f7;line-height:1.55;}
+.pdf-blk{margin:0 40px 12px;}
+.pdf-blk h4{color:#142768;font-size:14px;font-weight:700;margin-bottom:2px;}
+.pdf-blk p{font-size:13.5px;line-height:1.55;}
+.pdf-career{margin:14px 40px 0;background:#FFF4D8;border-radius:12px;padding:16px 18px;}
+.pdc-h{color:#142768;font-size:13.5px;font-weight:800;margin-bottom:8px;}
+.pdc-row{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-top:1px solid #f0dca0;}
+.pdc-row:first-of-type{border-top:none;}
+.pdc-tag{flex:none;font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:7px;min-width:118px;text-align:center;color:#fff;}
+.pdc-tag.th{background:#142768;} .pdc-tag.tg{background:#e0990a;} .pdc-tag.tn{background:#1f9d57;}
+.pdc-row span:last-child{font-size:13px;}
+.pdf-line{display:flex;gap:14px;align-items:flex-start;margin:0 40px 9px;
+  background:#fafbff;border:1px solid #eef0f7;border-radius:10px;padding:11px 14px;}
+.pl-n{flex:none;width:38px;height:38px;border-radius:9px;background:#142768;color:#F6B115;
+  font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;}
+.pl-n.w{background:#FFF4D8;color:#e0990a;}
+.pl-t{font-size:13px;line-height:1.5;}
+.pl-t b{color:#142768;}
+.pls-wrap{display:flex;gap:24px;margin:0 40px;align-items:flex-start;}
+.pls-grid{display:grid;grid-template-columns:repeat(3,58px);grid-auto-rows:58px;gap:7px;flex:none;}
+.pls{border:1.4px solid #e7e9f2;border-radius:10px;background:#fafbff;
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#142768;letter-spacing:1px;}
+.pls.on{background:#142768;color:#F6B115;}
+.pls i{color:#cfd5e8;font-style:normal;font-size:15px;}
+.pls-arrows{flex:1;}
+.pa-h{font-weight:800;font-size:12.5px;padding:5px 11px;border-radius:7px;margin:0 0 6px;}
+.pa-h.s{background:#e7f6ee;color:#1f9d57;} .pa-h.w{background:#FFF4D8;color:#e0990a;margin-top:8px;}
+.pa-i{font-size:12px;line-height:1.5;margin-bottom:3px;}
+.pa-i b{color:#142768;}
+.pa-none{font-size:12.5px;color:#697089;margin:0 40px;}
+.pdf-final{margin:24px 40px 0;background:#FFF4D8;border:1px solid #f0dca0;border-radius:14px;padding:22px 24px;text-align:center;}
+.pf-tag{display:inline-block;background:#142768;color:#fff;font-weight:700;font-size:12px;
+  padding:5px 16px;border-radius:999px;margin-bottom:10px;}
+.pdf-final p{font-size:13.5px;line-height:1.6;color:#171b2e;}
+.pf-contact{margin-top:12px;font-size:12px;font-weight:700;color:#142768;}
+.pdf-disclaim{font-size:11.5px;font-style:italic;color:#697089;margin:14px 40px 0;text-align:center;}
+.pdf-foot{position:absolute;bottom:0;left:0;right:0;background:#142768;color:#fff;
+  text-align:center;font-size:11px;padding:9px 10px;}
+.pdf-foot b{color:#fff;}
 </style>
 </head>
 <body>
@@ -234,6 +347,8 @@ footer span{font-size:12.5px;color:#c7d2f5;}
     <div id="grid" class="grid"></div>
     <p class="hint">💡 Bấm vào từng ô để đọc luận giải chi tiết &amp; gợi ý hướng nghiệp.</p>
 
+    <div id="birthChart"></div>
+
     <details class="edu">
       <summary>Cách tính: bảng quy đổi chữ cái Pythagoras</summary>
       <div class="edu-body">
@@ -247,10 +362,15 @@ footer span{font-size:12.5px;color:#c7d2f5;}
       </div>
     </details>
 
+    <div class="pdf-cta-wrap">
+      <button id="btnPdf" class="btn-pdf" onclick="exportPDF()">📄 Tải hồ sơ hướng nghiệp (PDF)</button>
+      <p class="pdf-note">Hồ sơ năng lượng số đầy đủ, thiết kế chuẩn Hướng Nghiệp Alpha — lưu lại hoặc in ra.</p>
+    </div>
+
     <div class="cta">
-      <h4>Muốn đi sâu hơn cùng con?</h4>
-      <p>Nhân số học chỉ là một mảnh ghép. Tại HNA, con số được kết hợp với <b>Holland RIASEC</b> và <b>Trí thông minh đa dạng (Gardner)</b> để xây dựng lộ trình hướng nghiệp cá nhân hóa.</p>
-      <a href="https://www.huongnghiepalpha.vn" target="_blank" rel="noopener">Đặt lịch tư vấn cùng HNA ›</a>
+      <h4>Không chỉ biết bạn giỏi điều gì, mà còn biết cách đi đúng hướng.</h4>
+      <p>Alpha kết hợp các mô hình đánh giá năng lực và định hướng nghề nghiệp quốc tế để giúp học sinh khám phá thế mạnh, lựa chọn ngành học phù hợp và xây dựng lộ trình chinh phục các trường đại học hàng đầu.</p>
+      <a href="https://www.huongnghiepalpha.vn" target="_blank" rel="noopener">Nhận tư vấn chuyên sâu →</a>
     </div>
   </section>
 </div>
@@ -271,6 +391,11 @@ footer span{font-size:12.5px;color:#c7d2f5;}
   <span>Hotline: 096 937 4411 &nbsp;|&nbsp; Email: huongnghiepalpha@gmail.com &nbsp;|&nbsp; www.huongnghiepalpha.vn</span>
 </footer>
 
+<!-- Khung dựng hồ sơ PDF (ẩn ngoài màn hình) -->
+<div id="pdfRoot" aria-hidden="true"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 <script>
 /* ============== DATA (HNA biên soạn) ============== */
 /* ============================================================
@@ -290,7 +415,10 @@ const NS = {
     nhanCach:  { ten: "Số Nhân Cách",  mota: "Tính từ các phụ âm trong tên — ấn tượng đầu tiên người khác cảm nhận về em." },
     ngaySinh:  { ten: "Số Ngày Sinh",  mota: "Tính từ ngày trong tháng — một năng khiếu trời cho mà em mang theo từ nhỏ." },
     truongThanh:{ ten: "Số Trưởng Thành", mota: "Đường Đời + Sứ Mệnh — phiên bản chín chắn của em, rõ dần sau tuổi 30." },
-    tenTacY:   { ten: "Tên Tác Ý",     mota: "Năng lượng của một cái tên mới (biệt danh / tên muốn dùng) để so sánh với tên gốc." }
+    tenTacY:   { ten: "Tên Tác Ý",     mota: "Năng lượng của một cái tên mới (biệt danh / tên muốn dùng) để so sánh với tên gốc." },
+    canBang:   { ten: "Số Cân Bằng",   mota: "Tính từ chữ cái đầu mỗi từ trong họ tên — cách em phản ứng tự nhiên khi gặp áp lực, khó khăn." },
+    thaiDo:    { ten: "Số Thái Độ",    mota: "Tính từ ngày + tháng sinh — ấn tượng đầu tiên và cách em tiếp cận một tình huống mới, đôi khi khác với con người bên trong." },
+    soThieu:   { ten: "Số Thiếu",      mota: "Những con số 1–9 vắng mặt trong tên — năng lượng và bài học em nên chủ động bồi đắp." }
   },
 
   /* ---------- SỐ ĐƯỜNG ĐỜI (kèm hướng nghiệp Holland) ---------- */
@@ -299,62 +427,62 @@ const NS = {
       core:"Em sinh ra để dẫn đầu, để bắt đầu những thứ chưa ai làm. Bên trong em luôn có một động cơ muốn tự quyết, không thích bị dắt tay.",
       strength:"Độc lập, quyết đoán, dám chịu trách nhiệm, có sáng kiến và ý chí mạnh.",
       challenge:"Dễ bướng và ngại nhờ vả. Bài học lớn nhất là học cách lắng nghe và hợp tác thay vì 'một mình một ngựa'.",
-      career:"Hợp vai trò khởi xướng, làm chủ. Nhóm Holland nổi trội: <b>E (Quản lý)</b> và <b>I (Nghiên cứu)</b>. Gợi ý: khởi nghiệp, quản trị kinh doanh, lãnh đạo dự án, kỹ sư trưởng." },
+      career:{holland:"E (Quản lý) · I (Nghiên cứu) · R (Kỹ thuật)",gardner:"Nội tâm · Logic–Toán học · Giao tiếp",nganh:"Khởi nghiệp, Quản trị kinh doanh, Lãnh đạo dự án, Kỹ sư trưởng"} },
     2: { kw:"Người kết nối",
       core:"Em nhạy cảm với cảm xúc người khác và giỏi làm cầu nối. Em mạnh khi đứng cạnh hỗ trợ, không nhất thiết phải đứng giữa sân khấu.",
       strength:"Tinh tế, kiên nhẫn, hợp tác tốt, biết lắng nghe và hòa giải.",
       challenge:"Dễ tự ti, ngại va chạm, hay nhường nhịn đến mức quên mình. Cần học cách nói 'không'.",
-      career:"Hợp môi trường cần sự đồng cảm và phối hợp. Nhóm Holland: <b>S (Xã hội)</b> và <b>A (Nghệ thuật)</b>. Gợi ý: tâm lý, nhân sự, công tác xã hội, ngoại giao, điều dưỡng, giáo viên." },
+      career:{holland:"S (Xã hội) · A (Nghệ thuật) · C (Nghiệp vụ)",gardner:"Giao tiếp · Nội tâm · Ngôn ngữ",nganh:"Tâm lý, Nhân sự, Công tác xã hội, Ngoại giao, Điều dưỡng, Sư phạm"} },
     3: { kw:"Người truyền cảm hứng",
       core:"Em có nguồn sáng tạo và năng lượng biểu đạt dồi dào. Em thấy sống động nhất khi được nói, viết, vẽ, biểu diễn — được lan tỏa.",
       strength:"Sáng tạo, lạc quan, giao tiếp duyên dáng, truyền năng lượng tích cực.",
       challenge:"Dễ phân tán, làm nhiều thứ một lúc rồi bỏ dở. Cần kỷ luật để đi tới cùng.",
-      career:"Hợp nghề cần sáng tạo và ngôn từ. Nhóm Holland: <b>A (Nghệ thuật)</b> và <b>S (Xã hội)</b>. Gợi ý: truyền thông, marketing, thiết kế, báo chí, sân khấu, sáng tạo nội dung." },
+      career:{holland:"A (Nghệ thuật) · S (Xã hội) · E (Quản lý)",gardner:"Ngôn ngữ · Âm nhạc · Giao tiếp",nganh:"Truyền thông, Marketing, Thiết kế, Báo chí, Sân khấu, Sáng tạo nội dung"} },
     4: { kw:"Người xây nền",
       core:"Em là người làm thật, chắc và bền. Em tin vào kỷ luật, quy trình và sự kiên trì hơn là may rủi.",
       strength:"Chăm chỉ, đáng tin, có tổ chức, làm việc chi tiết và đến nơi đến chốn.",
       challenge:"Đôi khi quá cứng nhắc, ngại thay đổi. Cần học sự linh hoạt và cho phép mình nghỉ ngơi.",
-      career:"Hợp nghề cần độ chính xác và hệ thống. Nhóm Holland: <b>C (Nghiệp vụ)</b> và <b>R (Kỹ thuật)</b>. Gợi ý: kế toán, kiểm toán, kỹ thuật, xây dựng, logistics, quản lý dữ liệu." },
+      career:{holland:"C (Nghiệp vụ) · R (Kỹ thuật) · I (Nghiên cứu)",gardner:"Logic–Toán học · Không gian – Thị giác · Nội tâm",nganh:"Kế toán, Kiểm toán, Kỹ thuật, Xây dựng, Logistics, Quản lý dữ liệu"} },
     5: { kw:"Người tự do",
       core:"Em khát khao trải nghiệm, di chuyển và thay đổi. Sự gò bó làm em ngộp; sự mới mẻ làm em sống.",
       strength:"Linh hoạt, thích nghi nhanh, can đảm thử cái mới, giỏi giao tiếp đa dạng.",
       challenge:"Dễ cả thèm chóng chán, thiếu kiên định. Cần học cách cam kết với mục tiêu dài hạn.",
-      career:"Hợp nghề năng động, hay di chuyển. Nhóm Holland: <b>E (Quản lý)</b> và <b>A (Nghệ thuật)</b>. Gợi ý: du lịch, kinh doanh quốc tế, truyền thông, hướng dẫn viên, sự kiện, ngoại thương." },
+      career:{holland:"E (Quản lý) · A (Nghệ thuật) · S (Xã hội)",gardner:"Ngôn ngữ · Giao tiếp · Vận động cơ thể",nganh:"Du lịch, Kinh doanh quốc tế, Truyền thông, Hướng dẫn viên, Sự kiện, Ngoại thương"} },
     6: { kw:"Người chăm sóc",
       core:"Em sống vì trách nhiệm và tình thương. Em thấy ý nghĩa khi chăm lo cho gia đình, cộng đồng và những người yếu thế.",
       strength:"Ấm áp, có trách nhiệm, đáng tin cậy, giỏi tạo cảm giác an toàn cho người khác.",
       challenge:"Dễ ôm việc, hy sinh quá mức và can thiệp đời người khác. Cần học cách buông và yêu thương cả bản thân.",
-      career:"Hợp nghề chữa lành và phục vụ con người. Nhóm Holland: <b>S (Xã hội)</b> và <b>I (Nghiên cứu)</b>. Gợi ý: y khoa, điều dưỡng, sư phạm, tâm lý, dinh dưỡng, công tác xã hội." },
+      career:{holland:"S (Xã hội) · I (Nghiên cứu) · A (Nghệ thuật)",gardner:"Giao tiếp · Nội tâm · Tự nhiên",nganh:"Y khoa, Điều dưỡng, Sư phạm, Tâm lý, Dinh dưỡng, Công tác xã hội"} },
     7: { kw:"Người tìm chân lý",
       core:"Em có chiều sâu nội tâm và khát khao hiểu bản chất mọi thứ. Em cần thời gian một mình để suy ngẫm.",
       strength:"Tư duy phân tích sắc bén, tự học giỏi, trực giác mạnh, độc lập về suy nghĩ.",
       challenge:"Dễ khép kín, hoài nghi, khó chia sẻ cảm xúc. Cần học cách tin tưởng và kết nối.",
-      career:"Hợp nghề nghiên cứu và chuyên môn sâu. Nhóm Holland: <b>I (Nghiên cứu)</b> và <b>R (Kỹ thuật)</b>. Gợi ý: khoa học, công nghệ thông tin, nghiên cứu, phân tích dữ liệu, y sinh, triết học." },
+      career:{holland:"I (Nghiên cứu) · R (Kỹ thuật) · C (Nghiệp vụ)",gardner:"Logic–Toán học · Nội tâm · Hiện sinh – Triết học",nganh:"Khoa học, Công nghệ thông tin, Nghiên cứu, Phân tích dữ liệu, Y sinh, Triết học"} },
     8: { kw:"Người kiến tạo giá trị",
       core:"Em có bản năng về quyền lực, tiền bạc và tầm vóc. Em muốn xây dựng những thứ lớn và để lại dấu ấn rõ ràng.",
       strength:"Tham vọng lành mạnh, giỏi tổ chức nguồn lực, bản lĩnh, nhìn được bức tranh lớn.",
       challenge:"Dễ cuốn theo vật chất và kiểm soát. Cần học sự cân bằng và cho đi.",
-      career:"Hợp vai trò điều hành và tài chính. Nhóm Holland: <b>E (Quản lý)</b> và <b>C (Nghiệp vụ)</b>. Gợi ý: quản trị, tài chính – ngân hàng, đầu tư, luật kinh tế, kinh doanh, bất động sản." },
+      career:{holland:"E (Quản lý) · C (Nghiệp vụ) · I (Nghiên cứu)",gardner:"Logic–Toán học · Nội tâm · Giao tiếp",nganh:"Quản trị, Tài chính – Ngân hàng, Đầu tư, Luật kinh tế, Kinh doanh, Bất động sản"} },
     9: { kw:"Người lý tưởng",
       core:"Em sống vì điều lớn hơn bản thân. Em giàu lòng trắc ẩn và muốn thế giới này tốt đẹp hơn nhờ có em.",
       strength:"Bao dung, nhân ái, có tầm nhìn rộng, dễ truyền cảm hứng và cảm thông.",
       challenge:"Dễ lý tưởng hóa và thất vọng khi thực tế phũ phàng. Cần học cách thực tế và đặt ranh giới.",
-      career:"Hợp nghề phụng sự và sáng tạo có ý nghĩa. Nhóm Holland: <b>S (Xã hội)</b> và <b>A (Nghệ thuật)</b>. Gợi ý: giáo dục, y tế cộng đồng, hoạt động xã hội, nghệ thuật, môi trường, ngoại giao." },
+      career:{holland:"S (Xã hội) · A (Nghệ thuật) · I (Nghiên cứu)",gardner:"Nội tâm · Ngôn ngữ · Giao tiếp",nganh:"Giáo dục, Y tế cộng đồng, Hoạt động xã hội, Nghệ thuật, Môi trường, Ngoại giao"} },
     11:{ kw:"Người dẫn đường tinh thần (Master 11)",
       core:"Em mang năng lượng số 2 được nâng lên — nhạy bén, trực giác mạnh và một sứ mệnh truyền cảm hứng cho người khác bằng ánh sáng nội tâm.",
       strength:"Trực giác xuất sắc, nhạy cảm tinh tế, có sức ảnh hưởng và chiều sâu tâm hồn.",
       challenge:"Mang áp lực lớn, dễ căng thẳng và lo âu. Cần học cách neo mình vào thực tế và chăm sóc tinh thần.",
-      career:"Hợp nghề cần cảm hứng và kết nối con người. Nhóm Holland: <b>A (Nghệ thuật)</b> và <b>S (Xã hội)</b>. Gợi ý: tâm lý, giáo dục, nghệ thuật, truyền cảm hứng, tư vấn, nghiên cứu nhân văn." },
+      career:{holland:"A (Nghệ thuật) · S (Xã hội) · I (Nghiên cứu)",gardner:"Nội tâm · Giao tiếp · Ngôn ngữ",nganh:"Tâm lý, Giáo dục, Nghệ thuật, Tư vấn, Nghiên cứu nhân văn, Truyền cảm hứng"} },
     22:{ kw:"Bậc thầy kiến tạo (Master 22)",
       core:"Em mang năng lượng số 4 được nâng lên — khả năng biến giấc mơ lớn thành công trình thực tế có ích cho nhiều người.",
       strength:"Vừa có tầm nhìn của người mơ mộng, vừa có khả năng thực thi của người thực tế. Hiếm và mạnh.",
       challenge:"Áp lực 'phải làm điều vĩ đại' rất nặng. Cần kiên nhẫn và đi từng bước.",
-      career:"Hợp vai trò xây dựng quy mô lớn. Nhóm Holland: <b>E (Quản lý)</b> và <b>R (Kỹ thuật)</b>. Gợi ý: kiến trúc, kỹ thuật quy mô lớn, quản trị dự án, chính sách công, doanh nghiệp xã hội." },
+      career:{holland:"E (Quản lý) · R (Kỹ thuật) · C (Nghiệp vụ)",gardner:"Logic–Toán học · Không gian – Thị giác · Nội tâm",nganh:"Kiến trúc, Kỹ thuật quy mô lớn, Quản trị dự án, Chính sách công, Doanh nghiệp xã hội"} },
     33:{ kw:"Bậc thầy yêu thương (Master 33)",
       core:"Em mang năng lượng số 6 được nâng lên — sứ mệnh chữa lành và nâng đỡ cộng đồng bằng tình thương vô điều kiện.",
       strength:"Lòng từ bi lớn, khả năng truyền cảm hứng và chăm sóc ở quy mô rộng.",
       challenge:"Dễ kiệt sức vì cho đi quá nhiều. Cần học cách giữ năng lượng cho chính mình.",
-      career:"Hợp nghề giáo dục và chữa lành. Nhóm Holland: <b>S (Xã hội)</b>. Gợi ý: giáo dục, y khoa, tâm lý trị liệu, công tác cộng đồng, lãnh đạo phụng sự." }
+      career:{holland:"S (Xã hội) · A (Nghệ thuật) · I (Nghiên cứu)",gardner:"Giao tiếp · Nội tâm · Ngôn ngữ",nganh:"Giáo dục, Y khoa, Tâm lý trị liệu, Công tác cộng đồng, Lãnh đạo phụng sự"} }
   },
 
   /* ---------- SỐ SỨ MỆNH ---------- */
@@ -432,6 +560,45 @@ const NS = {
     11:{kw:"Hướng tới ánh sáng dẫn đường (Master)",core:"Trưởng thành rồi, em trở thành nguồn cảm hứng và điểm tựa tinh thần cho người khác."},
     22:{kw:"Hướng tới công trình lớn (Master)",core:"Phiên bản chín chắn của em kiến tạo những điều lớn lao phục vụ cộng đồng."},
     33:{kw:"Hướng tới tình thương lớn (Master)",core:"Về sau em chữa lành và nâng đỡ cộng đồng bằng tình thương vô điều kiện."}
+  },
+
+  /* ---------- SỐ CÂN BẰNG (cách ứng phó khi căng thẳng) ---------- */
+  canBang: {
+    1:{kw:"Tự lực đối mặt",core:"Khi gặp khó, em có xu hướng tự mình gánh vác và chủ động giải quyết, không chờ ai.",strength:"Quyết đoán, bản lĩnh, bình tĩnh trong tình huống khẩn.",challenge:"Học cách nhờ giúp đỡ và chia sẻ cảm xúc — nhờ hỗ trợ không phải là yếu đuối."},
+    2:{kw:"Tìm sự hòa giải",core:"Em xử lý áp lực bằng cách lắng nghe, tìm điểm chung và làm dịu căng thẳng.",strength:"Tinh tế, kiên nhẫn, biết xoa dịu.",challenge:"Đừng nhịn quá mức — hãy mạnh dạn nói ra chính kiến của mình."},
+    3:{kw:"Dùng sự lạc quan",core:"Em vượt khó bằng tinh thần tích cực, hài hước và trò chuyện với người khác.",strength:"Lạc quan, giao tiếp tốt, mau phục hồi.",challenge:"Tránh né tránh hay chìm vào cảm xúc; giữ tập trung để giải quyết tận gốc."},
+    4:{kw:"Lập kế hoạch từng bước",core:"Em bình ổn lại bằng cách sắp xếp, lên kế hoạch và làm chắc từng việc một.",strength:"Kỷ luật, thực tế, đáng tin.",challenge:"Đừng quá cứng nhắc hay lo xa; cho phép mình nghỉ ngơi và linh hoạt."},
+    5:{kw:"Linh hoạt xoay chuyển",core:"Em ứng phó bằng cách đổi góc nhìn, thử cách mới và thích nghi nhanh.",strength:"Nhanh nhạy, can đảm, đa năng.",challenge:"Tránh bốc đồng hay bỏ cuộc giữa chừng; kiên định với giải pháp đã chọn."},
+    6:{kw:"Tìm lại sự cân bằng qua yêu thương",core:"Em lấy lại thăng bằng khi chăm sóc người thân hoặc làm điều ý nghĩa cho người khác.",strength:"Ấm áp, trách nhiệm, tạo cảm giác an toàn.",challenge:"Đừng ôm hết trách nhiệm; nhớ chăm sóc cả chính mình."},
+    7:{kw:"Lùi lại suy ngẫm",core:"Em cần khoảng lặng để phân tích và hiểu bản chất vấn đề trước khi hành động.",strength:"Sâu sắc, phân tích tốt, điềm tĩnh.",challenge:"Tránh né tránh hoặc chìm vào cảm xúc; mở lòng chia sẻ với người tin cậy."},
+    8:{kw:"Đối diện trực tiếp",core:"Em xông thẳng vào vấn đề, kiểm soát tình huống và quyết tâm xử lý dứt điểm.",strength:"Bản lĩnh, quyết liệt, có trách nhiệm.",challenge:"Tránh nóng vội và lo lắng thái quá; kiên nhẫn vì không phải việc gì cũng nhanh."},
+    9:{kw:"Bao dung và nhìn xa",core:"Em ứng phó bằng lòng bao dung, nhìn bức tranh lớn và cảm thông với mọi người.",strength:"Nhân ái, độ lượng, tầm nhìn rộng.",challenge:"Đừng chần chừ — hãy chủ động hành động sớm, đừng sợ sai."}
+  },
+
+  /* ---------- SỐ THIẾU (bài học cần bồi đắp) ---------- */
+  soThieu: {
+    1:{kw:"Bồi đắp sự độc lập",core:"Tên em thiếu năng lượng số 1. Đây là lời mời rèn sự tự tin, tính tự chủ và khả năng tự quyết. Hãy tập đưa ra ý kiến riêng và dám đứng đầu khi cần, thay vì luôn dựa vào người khác."},
+    2:{kw:"Bồi đắp sự tinh tế",core:"Tên em thiếu năng lượng số 2. Hãy rèn sự kiên nhẫn, khả năng lắng nghe và hợp tác. Chú ý đến cảm xúc của người xung quanh sẽ giúp các mối quan hệ của em hài hòa hơn."},
+    3:{kw:"Bồi đắp sự biểu đạt",core:"Tên em thiếu năng lượng số 3. Hãy mạnh dạn bày tỏ ý tưởng, cảm xúc và thử sức với hoạt động sáng tạo. Đừng ngại thể hiện bản thân và tận hưởng niềm vui sống."},
+    4:{kw:"Bồi đắp tính kỷ luật",core:"Tên em thiếu năng lượng số 4. Hãy rèn sự ngăn nắp, kiên nhẫn và thói quen lập kế hoạch. Tập làm việc đến nơi đến chốn, đừng dễ nản và bỏ dở giữa chừng."},
+    5:{kw:"Bồi đắp sự linh hoạt",core:"Tên em thiếu năng lượng số 5. Hãy can đảm thử điều mới, bước ra khỏi vùng an toàn và bớt trì hoãn. Sự dạn dĩ và thích nghi sẽ mở ra nhiều cơ hội cho em."},
+    6:{kw:"Bồi đắp tinh thần trách nhiệm",core:"Tên em thiếu năng lượng số 6. Hãy rèn sự cam kết, quan tâm tới gia đình và những người quanh mình. Học cách gắn bó và chịu trách nhiệm sẽ giúp em trưởng thành."},
+    7:{kw:"Bồi đắp chiều sâu",core:"Tên em thiếu năng lượng số 7. Hãy dành thời gian suy ngẫm, tự học và đào sâu một lĩnh vực mình yêu thích. Tin vào trực giác và đặt câu hỏi 'vì sao' nhiều hơn."},
+    8:{kw:"Bồi đắp bản lĩnh & định hướng",core:"Tên em thiếu năng lượng số 8. Hãy rèn khả năng đặt mục tiêu, quản lý thời gian/tiền bạc và kiên trì theo đuổi. Một định hướng rõ ràng sẽ giúp em vững vàng hơn."},
+    9:{kw:"Bồi đắp lòng nhân ái",core:"Tên em thiếu năng lượng số 9. Hãy mở rộng tầm nhìn, quan tâm tới điều lớn hơn bản thân và tập đồng cảm. Lòng trắc ẩn sẽ làm cuộc sống của em ý nghĩa hơn."}
+  },
+
+  /* ---------- SỐ THÁI ĐỘ (ấn tượng đầu tiên) ---------- */
+  thaiDo: {
+    1:{kw:"Chủ động & tự tin",core:"Khi tiếp cận việc mới, em thể hiện sự chủ động, tự tin và muốn làm theo cách của mình. Người khác thường thấy em quyết đoán, có khí chất lãnh đạo."},
+    2:{kw:"Nhẹ nhàng & hợp tác",core:"Em tiếp cận tình huống mới một cách điềm đạm, thích lắng nghe và giữ hòa khí. Ấn tượng đầu tiên em tạo ra là sự dễ chịu, tinh tế."},
+    3:{kw:"Vui vẻ & cởi mở",core:"Em bước vào việc mới với năng lượng tươi sáng, thích giao tiếp và thể hiện bản thân. Người khác thấy em thân thiện, có duyên."},
+    4:{kw:"Nghiêm túc & thực tế",core:"Em tiếp cận mọi việc một cách bài bản, coi trọng kỷ luật và sự chắc chắn. Ấn tượng ban đầu là một người đáng tin, vững vàng."},
+    5:{kw:"Linh hoạt & tò mò",core:"Em đón nhận cái mới với sự tò mò, sẵn sàng thay đổi và thử nghiệm. Người khác thấy em năng động, cá tính."},
+    6:{kw:"Ấm áp & trách nhiệm",core:"Em tiếp cận tình huống với sự quan tâm tới người khác và tinh thần trách nhiệm. Ấn tượng đầu tiên là một người ấm áp, đáng tựa vào."},
+    7:{kw:"Trầm tĩnh & quan sát",core:"Em thường lùi lại quan sát, phân tích trước khi nhập cuộc. Người khác có thể thấy em hơi kín đáo nhưng sâu sắc."},
+    8:{kw:"Quyết đoán & hiệu quả",core:"Em tiếp cận việc mới với tư duy thực tế, hướng tới kết quả và hiệu quả. Ấn tượng đầu tiên là một người bản lĩnh, có năng lực."},
+    9:{kw:"Rộng lượng & lý tưởng",core:"Em bước vào tình huống với cái nhìn bao dung và quan tâm tới điều lớn lao. Người khác thấy em điềm đạm, có chiều sâu nhân văn."}
   }
 };
 
@@ -451,6 +618,51 @@ function analyzeName(s){const w=clean(s).trim().split(/\s+/).filter(Boolean);let
     if(iv)v+=val;else c+=val;}}
   return{suMenh:reduce(t),linhHon:reduce(v),nhanCach:reduce(c)};}
 
+// Số Cân Bằng: chữ cái đầu mỗi từ, rút gọn về 1 chữ số
+function balanceNumber(nameStr){
+  const w=clean(nameStr).trim().split(/\s+/).filter(Boolean);
+  let s=0; for(const word of w){ s+=MAP[word[0]]||0; }
+  return reduce(s,false);
+}
+// Số Thiếu: các số 1..9 không xuất hiện trong tên
+function missingNumbers(nameStr){
+  const letters=clean(nameStr).replace(/\s/g,'');
+  const seen=new Set();
+  for(const ch of letters){ if(MAP[ch]) seen.add(MAP[ch]); }
+  const miss=[]; for(let i=1;i<=9;i++){ if(!seen.has(i)) miss.push(i); }
+  return miss;
+}
+
+// Số Thái Độ: ngày + tháng sinh
+function attitudeNumber(dd,mm){ return reduce(dd+mm,false); }
+
+// Biểu đồ ngày sinh (Lo Shu): đếm số lần xuất hiện 1..9 trong ngày-tháng-năm
+function birthChart(dd,mm,yyyy){
+  const ds=(String(dd)+String(mm)+String(yyyy)).split('').map(Number);
+  const c={1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0};
+  ds.forEach(d=>{ if(d>=1&&d<=9) c[d]++; });
+  return c;
+}
+// 8 đường mũi tên (Lo Shu)
+const LINES=[
+  {set:[1,2,3], full:["Mũi tên Kế Hoạch","Em có tư duy tổ chức, biết lập kế hoạch và sắp xếp công việc bài bản."],
+                empty:["Trống Tổ Chức","Nên rèn thói quen lập kế hoạch và sắp xếp công việc khoa học hơn."]},
+  {set:[4,5,6], full:["Mũi tên Ý Chí","Em kiên định, bền bỉ và vượt qua khó khăn bằng quyết tâm mạnh mẽ."],
+                empty:["Trống Ý Chí","Nên rèn sự kiên trì, đừng dễ nản khi gặp trở ngại."]},
+  {set:[7,8,9], full:["Mũi tên Hành Động","Em năng động, thực thi nhanh và giàu năng lượng hành động."],
+                empty:["Trống Hành Động","Nên chủ động bắt tay làm thay vì trì hoãn ý tưởng."]},
+  {set:[1,4,7], full:["Mũi tên Thực Tế","Em thực tế, khéo léo và giỏi biến ý tưởng thành kết quả cụ thể."],
+                empty:["Trống Thực Tế","Nên đưa ý tưởng về những bước làm cụ thể, rõ ràng hơn."]},
+  {set:[2,5,8], full:["Mũi tên Cảm Xúc","Em cân bằng cảm xúc tốt và nhạy bén trong các mối quan hệ."],
+                empty:["Trống Cảm Xúc","Nên học cách cân bằng và bày tỏ cảm xúc, tránh dồn nén."]},
+  {set:[3,6,9], full:["Mũi tên Trí Tuệ","Em có tư duy sắc bén, trí nhớ tốt và khả năng học hỏi nhanh."],
+                empty:["Trống Trí Tuệ","Nên rèn thói quen tư duy, ghi chú và củng cố trí nhớ."]},
+  {set:[1,5,9], full:["Mũi tên Quyết Tâm","Khi đã đặt mục tiêu, em theo đuổi đến cùng với ý chí kiên cường."],
+                empty:["Trống Quyết Tâm","Nên đặt mục tiêu rõ ràng và theo đến cùng, tránh bỏ dở."]},
+  {set:[3,5,7], full:["Mũi tên Nhạy Bén","Em giàu trực giác, nhạy cảm và có chiều sâu tinh thần."],
+                empty:["Trống Nhạy Bén","Nên lắng nghe trực giác và nuôi dưỡng đời sống tinh thần."]}
+];
+
 let R={}, NAME="";
 
 document.getElementById('form').addEventListener('submit',function(e){
@@ -465,6 +677,8 @@ document.getElementById('form').addEventListener('submit',function(e){
   const dl=lifePath(yy,mm,dd);
   R={duongDoi:dl,suMenh:nm.suMenh,linhHon:nm.linhHon,nhanCach:nm.nhanCach,
      ngaySinh:reduce(dd),truongThanh:reduce(dl+nm.suMenh),
+     canBang:balanceNumber(fullName),thaiDo:attitudeNumber(dd,mm),
+     soThieu:missingNumbers(fullName),chart:birthChart(dd,mm,yy),
      tenTacY:intent?analyzeName(intent).suMenh:null};
   render();
   const sec=document.getElementById('results');
@@ -486,7 +700,7 @@ function render(){
       '<p>'+(function(t){t=(t||'').replace(/<[^>]+>/g,'');return t.length>112?t.slice(0,112)+'…':t;})(fd.core)+'</p>'+
       '<div class="fcta">Bấm để xem luận giải đầy đủ ›</div></div></div>';
   // grid (các chỉ số còn lại)
-  const order=['suMenh','linhHon','nhanCach','ngaySinh','truongThanh'];
+  const order=['suMenh','linhHon','nhanCach','ngaySinh','thaiDo','truongThanh','canBang'];
   if(R.tenTacY!==null)order.push('tenTacY');
   const grid=document.getElementById('grid');grid.innerHTML='';
   order.forEach((k,i)=>{
@@ -500,18 +714,103 @@ function render(){
       '<div class="cnum">'+n+'</div><div class="ctap">Xem chi tiết ›</div>';
     grid.appendChild(el);
   });
+  // Số Thiếu (hiển thị riêng: tập hợp số)
+  const miss=R.soThieu||[];
+  const sel=document.createElement('div');
+  sel.className='cell reveal thieu';
+  sel.style.animationDelay=(0.05*(order.length+1))+'s';
+  sel.onclick=()=>showDetail('soThieu');
+  let disp = miss.length===0 ? '<span class="full-ok">✓ Đủ</span>'
+           : '<span class="miss-list">'+miss.join(' ')+'</span>';
+  sel.innerHTML='<div class="ctop"><span class="clabel">Số Thiếu</span></div>'+
+    '<div class="cnum cnum-set">'+disp+'</div>'+
+    '<div class="ctap">'+(miss.length===0?'Tên hội tụ đủ 1–9':'Xem bài học cần bồi đắp ›')+'</div>';
+  grid.appendChild(sel);
+  renderChart();
+}
+
+/* Biểu đồ ngày sinh Lo Shu + mũi tên */
+function renderChart(){
+  const c=R.chart||{};
+  // bố cục Lo Shu: 3-6-9 / 2-5-8 / 1-4-7
+  const layout=[3,6,9,2,5,8,1,4,7];
+  let cells='';
+  layout.forEach(d=>{
+    const cnt=c[d]||0;
+    const txt=cnt>0 ? String(d).repeat(cnt) : '';
+    cells+='<div class="ls-cell'+(cnt>0?' on':'')+'">'+
+           (cnt>0?'<span class="ls-num">'+txt+'</span>':'<span class="ls-ghost">'+d+'</span>')+'</div>';
+  });
+  // phát hiện mũi tên
+  let strong=[], weak=[];
+  LINES.forEach(L=>{
+    const all=L.set.every(n=>(c[n]||0)>0);
+    const none=L.set.every(n=>(c[n]||0)===0);
+    if(all) strong.push(L.full);
+    else if(none) weak.push(L.empty);
+  });
+  let arrowsHtml='';
+  if(strong.length){
+    arrowsHtml+='<div class="arrow-group"><div class="arrow-h strong">▲ Mũi tên sức mạnh — thế mạnh nổi bật</div>';
+    strong.forEach(a=>arrowsHtml+='<div class="arrow-item s"><b>'+a[0]+'</b><span>'+a[1]+'</span></div>');
+    arrowsHtml+='</div>';
+  }
+  if(weak.length){
+    arrowsHtml+='<div class="arrow-group"><div class="arrow-h weak">△ Mũi tên trống — khía cạnh nên bồi đắp</div>';
+    weak.forEach(a=>arrowsHtml+='<div class="arrow-item w"><b>'+a[0]+'</b><span>'+a[1]+'</span></div>');
+    arrowsHtml+='</div>';
+  }
+  if(!strong.length && !weak.length){
+    arrowsHtml='<p class="arrow-none">Ngày sinh của em không tạo thành đường mũi tên rõ rệt — các năng lượng phân bố cân bằng.</p>';
+  }
+  document.getElementById('birthChart').innerHTML=
+    '<div class="panel chart-panel reveal">'+
+      '<h4 class="chart-title">Biểu đồ ngày sinh</h4>'+
+      '<p class="chart-sub">Số lần mỗi con số xuất hiện trong ngày sinh. Ba ô thẳng hàng (ngang, dọc, chéo) tạo thành một “mũi tên”.</p>'+
+      '<div class="ls-grid">'+cells+'</div>'+
+      '<div class="arrows">'+arrowsHtml+'</div>'+
+    '</div>';
 }
 
 function showDetail(key){
-  const n=R[key],meta=NS.meta[key],data=(NS[key]&&NS[key][n])?NS[key][n]:null;
+  const meta=NS.meta[key];
+  // Số Thiếu: hiển thị danh sách bài học
+  if(key==='soThieu'){
+    const miss=R.soThieu||[];
+    let h='<p class="m-meta">'+meta.mota+'</p>';
+    if(miss.length===0){
+      h+='<div class="kw">Hội tụ đủ năng lượng 1–9</div>'+
+         '<p>Tên của em xuất hiện đủ cả 9 con số — một sự cân bằng hiếm có. Điều này không có nghĩa mọi thứ đều dễ dàng, nhưng em có sẵn nền tảng đa dạng để phát triển toàn diện. Hãy phát huy đều các thế mạnh.</p>';
+    }else{
+      h+='<div class="kw">Thiếu số: '+miss.join(', ')+'</div>'+
+         '<p>Đây <b>không phải điểm yếu cố định</b>, mà là những năng lượng em nên chủ động bồi đắp. Với học sinh, đây chính là danh sách <b>kỹ năng nên rèn luyện</b>:</p>';
+      miss.forEach(n=>{
+        const d=NS.soThieu[n];
+        if(d)h+='<div class="thieu-item"><h5>Số '+n+' — '+d.kw+'</h5><p>'+d.core+'</p></div>';
+      });
+    }
+    h+='<div class="note">'+NS_NOTE+'</div>';
+    document.getElementById('mTitle').textContent='Số Thiếu';
+    document.getElementById('mBody').innerHTML=h;
+    document.getElementById('modal').classList.remove('hidden');
+    return;
+  }
+  const n=R[key],data=(NS[key]&&NS[key][n])?NS[key][n]:null;
   let h='<p class="m-meta">'+meta.mota+'</p>';
   if(data){
     if(data.kw)h+='<div class="kw">'+data.kw+'</div>';
     if(data.core)h+='<h5>Năng lượng cốt lõi</h5><p>'+data.core+'</p>';
     if(data.strength)h+='<h5>Điểm mạnh</h5><p>'+data.strength+'</p>';
     if(data.challenge)h+='<h5>Bài học cần lưu ý</h5><p>'+data.challenge+'</p>';
-    if(data.career)h+='<div class="career"><h5>🎯 Gợi ý hướng nghiệp</h5><p>'+data.career+'</p></div>';
-  }else{h+='<p>Nội dung luận giải cho con số này đang được HNA cập nhật thêm.</p>';}
+    if(data.career){
+      const cr=data.career;
+      h+='<div class="career"><h5>🎯 Gợi ý hướng nghiệp</h5>'+
+         '<div class="cr-row"><span class="cr-tag t-holland">3 nhóm Holland</span><span class="cr-val">'+cr.holland+'</span></div>'+
+         '<div class="cr-row"><span class="cr-tag t-gardner">3 trí thông minh nổi trội</span><span class="cr-val">'+cr.gardner+'</span></div>'+
+         '<div class="cr-row"><span class="cr-tag t-nganh">Ngành gợi ý</span><span class="cr-val">'+cr.nganh+'</span></div>'+
+         '</div>';
+    }
+  }else{h+='<p>Nội dung luận giải cho con số này đang được Alpha cập nhật thêm.</p>';}
   h+='<div class="note">'+NS_NOTE+'</div>';
   document.getElementById('mTitle').textContent=meta.ten+' — Số '+n;
   document.getElementById('mBody').innerHTML=h;
@@ -520,6 +819,147 @@ function showDetail(key){
 function closeModal(){document.getElementById('modal').classList.add('hidden');}
 document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ============== XUẤT PDF HỒ SƠ HƯỚNG NGHIỆP ============== */
+function fmtDate(bd){const[y,m,d]=bd.split('-');return d+'/'+m+'/'+y;}
+function plain(t){return(t||'').replace(/<[^>]+>/g,'');}
+
+function buildProfile(){
+  const mark=document.querySelector('.topbar .logo').src;
+  const full=document.querySelector('.foot-badge img').src;
+  const bd=document.getElementById('birthDate').value;
+  const today=new Date().toLocaleDateString('vi-VN');
+  const d=R.duongDoi, fd=NS.duongDoi[d]||{};
+
+  const footer='<div class="pdf-foot"><b>Hướng Nghiệp Alpha</b> &nbsp;|&nbsp; Hotline: 096 937 4411 &nbsp;|&nbsp; huongnghiepalpha@gmail.com &nbsp;|&nbsp; www.huongnghiepalpha.vn</div>';
+
+  // ----- PAGE 1 -----
+  let mapCells='';
+  const mapOrder=['duongDoi','suMenh','linhHon','nhanCach','ngaySinh','thaiDo','truongThanh','canBang'];
+  mapOrder.forEach(k=>{
+    const n=R[k], kw=(NS[k]&&NS[k][n])?NS[k][n].kw:'';
+    mapCells+='<div class="pp-cell"><div class="pp-num">'+n+'</div>'+
+      '<div class="pp-lbl">'+NS.meta[k].ten+'</div>'+
+      '<div class="pp-kw">'+kw+'</div></div>';
+  });
+  // Số thiếu cell
+  const miss=R.soThieu||[];
+  mapCells+='<div class="pp-cell"><div class="pp-num pp-num-sm">'+(miss.length?miss.join(' '):'Đủ')+'</div>'+
+    '<div class="pp-lbl">Số Thiếu</div><div class="pp-kw">'+(miss.length?'Cần bồi đắp':'Hội tụ 1–9')+'</div></div>';
+
+  const page1=
+    '<div class="pdf-page">'+
+      '<div class="pdf-header"><img class="pdf-logo" src="'+mark+'">'+
+        '<div><div class="pdf-h1">HỒ SƠ HƯỚNG NGHIỆP</div>'+
+        '<div class="pdf-h2">THEO NĂNG LƯỢNG SỐ</div></div></div>'+
+      '<div class="pdf-info">'+
+        '<div><span>HỌ VÀ TÊN</span><b>'+NAME+'</b></div>'+
+        '<div><span>NGÀY SINH</span><b>'+fmtDate(bd)+'</b></div>'+
+        '<div><span>NGÀY LẬP</span><b>'+today+'</b></div></div>'+
+      '<h3 class="pdf-sec">Bản đồ chỉ số năng lượng</h3>'+
+      '<div class="pp-grid">'+mapCells+'</div>'+
+      '<div class="pdf-feature">'+
+        '<div class="pf-num">'+d+'</div>'+
+        '<div class="pf-body"><div class="pf-lbl">SỐ ĐƯỜNG ĐỜI · '+(fd.kw||'')+'</div>'+
+        '<p>'+plain(fd.core)+'</p></div></div>'+
+      footer+
+    '</div>';
+
+  // ----- PAGE 2: Đường Đời chi tiết + chỉ số tên -----
+  let careerHtml='';
+  if(fd.career){const c=fd.career;
+    careerHtml='<div class="pdf-career"><div class="pdc-h">🎯 GỢI Ý HƯỚNG NGHIỆP</div>'+
+      '<div class="pdc-row"><span class="pdc-tag th">3 nhóm Holland</span><span>'+c.holland+'</span></div>'+
+      '<div class="pdc-row"><span class="pdc-tag tg">3 trí thông minh</span><span>'+c.gardner+'</span></div>'+
+      '<div class="pdc-row"><span class="pdc-tag tn">Ngành gợi ý</span><span>'+c.nganh+'</span></div></div>';
+  }
+  let nameRows='';
+  ['suMenh','linhHon','nhanCach','thaiDo','ngaySinh','truongThanh','canBang'].forEach(k=>{
+    const n=R[k],dt=(NS[k]&&NS[k][n])?NS[k][n]:{};
+    nameRows+='<div class="pdf-line"><span class="pl-n">'+n+'</span>'+
+      '<span class="pl-t"><b>'+NS.meta[k].ten+(dt.kw?' — '+dt.kw:'')+'</b><br>'+plain(dt.core)+'</span></div>';
+  });
+  const page2=
+    '<div class="pdf-page">'+
+      '<h3 class="pdf-sec">Số Đường Đời '+d+' — phân tích chi tiết</h3>'+
+      (fd.core?'<div class="pdf-blk"><h4>Năng lượng cốt lõi</h4><p>'+plain(fd.core)+'</p></div>':'')+
+      (fd.strength?'<div class="pdf-blk"><h4>Điểm mạnh</h4><p>'+plain(fd.strength)+'</p></div>':'')+
+      (fd.challenge?'<div class="pdf-blk"><h4>Bài học cần lưu ý</h4><p>'+plain(fd.challenge)+'</p></div>':'')+
+      careerHtml+
+      '<h3 class="pdf-sec">Các chỉ số từ họ tên &amp; ngày sinh</h3>'+
+      nameRows+
+      footer+
+    '</div>';
+
+  // ----- PAGE 3: Lo Shu + Số Thiếu + CTA -----
+  const c=R.chart||{};
+  const layout=[3,6,9,2,5,8,1,4,7];
+  let ls='';
+  layout.forEach(dd=>{const cnt=c[dd]||0;
+    ls+='<div class="pls'+(cnt>0?' on':'')+'">'+(cnt>0?String(dd).repeat(cnt):'<i>'+dd+'</i>')+'</div>';});
+  let strong=[],weak=[];
+  LINES.forEach(L=>{const all=L.set.every(x=>(c[x]||0)>0),none=L.set.every(x=>(c[x]||0)===0);
+    if(all)strong.push(L.full);else if(none)weak.push(L.empty);});
+  let arrows='';
+  if(strong.length){arrows+='<div class="pa-h s">▲ Mũi tên sức mạnh</div>';
+    strong.forEach(a=>arrows+='<div class="pa-i"><b>'+a[0]+':</b> '+a[1]+'</div>');}
+  if(weak.length){arrows+='<div class="pa-h w">△ Mũi tên trống — nên bồi đắp</div>';
+    weak.forEach(a=>arrows+='<div class="pa-i"><b>'+a[0]+':</b> '+a[1]+'</div>');}
+  if(!strong.length&&!weak.length)arrows='<p class="pa-none">Các năng lượng phân bố cân bằng, không tạo mũi tên rõ rệt.</p>';
+
+  let missHtml='';
+  if(miss.length){miss.forEach(n=>{const dd=NS.soThieu[n];if(dd)missHtml+='<div class="pdf-line"><span class="pl-n w">'+n+'</span><span class="pl-t"><b>'+dd.kw+'</b><br>'+plain(dd.core)+'</span></div>';});}
+  else missHtml='<p class="pa-none">Tên hội tụ đủ năng lượng 1–9 — nền tảng cân bằng để phát triển toàn diện.</p>';
+
+  const page3=
+    '<div class="pdf-page">'+
+      '<h3 class="pdf-sec">Biểu đồ ngày sinh &amp; mũi tên</h3>'+
+      '<div class="pls-wrap"><div class="pls-grid">'+ls+'</div>'+
+      '<div class="pls-arrows">'+arrows+'</div></div>'+
+      '<h3 class="pdf-sec">Số Thiếu — kỹ năng nên bồi đắp</h3>'+
+      missHtml+
+      '<div class="pdf-final">'+
+        '<div class="pf-tag">'+'Đồng hành cùng con trên hành trình hướng nghiệp'+'</div>'+
+        '<p>Không chỉ biết con giỏi điều gì, mà còn biết cách đi đúng hướng. Hướng Nghiệp Alpha kết hợp các mô hình đánh giá năng lực và định hướng nghề nghiệp quốc tế để giúp học sinh khám phá thế mạnh, chọn ngành phù hợp và chinh phục các trường đại học hàng đầu.</p>'+
+        '<div class="pf-contact">Liên hệ tư vấn chuyên sâu &nbsp;·&nbsp; Hotline 096 937 4411 &nbsp;·&nbsp; www.huongnghiepalpha.vn</div>'+
+      '</div>'+
+      '<p class="pdf-disclaim">Nhân số học là công cụ gợi mở để hiểu mình, không phải lời tiên tri. Mỗi con người luôn lớn hơn một con số.</p>'+
+      footer+
+    '</div>';
+
+  return '<div class="pdf-doc">'+page1+'<div class="html2pdf__page-break"></div>'+
+         page2+'<div class="html2pdf__page-break"></div>'+page3+'</div>';
+}
+
+function exportPDF(){
+  if(typeof html2canvas==='undefined' || !window.jspdf){
+    alert('Không tải được công cụ tạo PDF. Vui lòng kiểm tra kết nối mạng và thử lại.');return;
+  }
+  const btn=document.getElementById('btnPdf');
+  const old=btn.textContent; btn.disabled=true; btn.textContent='⏳ Đang tạo hồ sơ PDF...';
+  const root=document.getElementById('pdfRoot');
+  root.innerHTML=buildProfile();
+  const pages=root.querySelectorAll('.pdf-page');
+  const {jsPDF}=window.jspdf;
+  const pdf=new jsPDF('p','mm','a4');
+  const W=210, H=297;
+
+  (async()=>{
+    try{
+      for(let i=0;i<pages.length;i++){
+        const canvas=await html2canvas(pages[i],{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false});
+        const img=canvas.toDataURL('image/jpeg',0.95);
+        if(i>0) pdf.addPage();
+        pdf.addImage(img,'JPEG',0,0,W,H);
+      }
+      pdf.save('HoSo-HuongNghiep-'+(clean(NAME).replace(/\s+/g,'')||'Alpha')+'.pdf');
+    }catch(err){
+      alert('Có lỗi khi tạo PDF. Vui lòng thử lại.');
+    }finally{
+      btn.disabled=false; btn.textContent=old; root.innerHTML='';
+    }
+  })();
+}
 </script>
 </body>
 </html>
