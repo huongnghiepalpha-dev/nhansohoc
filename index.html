@@ -1,85 +1,525 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ứng Dụng Nhân Số Học Toàn Diện</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nhân Số Học — Hiểu Mình | Hướng Nghiệp Alpha</title>
+<meta name="description" content="Công cụ Nhân số học của Hướng Nghiệp Alpha giúp học sinh hiểu bản thân và gợi mở hướng nghiệp theo mô hình Holland RIASEC.">
+<meta property="og:title" content="Nhân Số Học — Hiểu Mình | Hướng Nghiệp Alpha">
+<meta property="og:description" content="Khám phá bản thân và gợi mở hướng nghiệp qua những con số.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ===================== HNA DESIGN SYSTEM ===================== */
+:root{
+  --navy:#142768; --navy-2:#1f3a8f; --navy-3:#28287a;
+  --amber:#F6B115; --amber-d:#e0990a; --amber-soft:#FFF4D8;
+  --ink:#171b2e; --muted:#697089; --line:#e7e9f2;
+  --paper:#f4f7ff; --white:#ffffff;
+  --r:16px; --rs:11px;
+  --shadow:0 18px 50px rgba(20,39,104,.10);
+  --shadow-sm:0 6px 18px rgba(20,39,104,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Be Vietnam Pro',system-ui,sans-serif;
+  background:var(--paper);color:var(--ink);line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;}
+.wrap{max-width:880px;margin:0 auto;padding:0 18px;}
+
+/* ===================== TOP BAR ===================== */
+.topbar{background:var(--navy);}
+.topbar .wrap{display:flex;align-items:center;gap:13px;padding:13px 18px;}
+.logo{width:40px;height:auto;flex:none;display:block;}
+.brand b{display:block;color:#fff;font-weight:800;font-size:15.5px;letter-spacing:.4px;line-height:1.2;}
+.brand span{display:block;color:var(--amber);font-size:11.5px;font-style:italic;font-weight:500;}
+
+/* ===================== HERO ===================== */
+.hero{position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-3) 55%,var(--navy-2) 100%);
+  color:#fff;padding:54px 0 92px;text-align:center;}
+.hero .wrap{position:relative;z-index:2;}
+.eyebrow{display:inline-block;color:var(--amber);font-weight:700;
+  font-size:12px;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;}
+.hero h1{font-size:clamp(30px,6vw,46px);font-weight:900;line-height:1.08;letter-spacing:-.5px;}
+.hero h1 em{font-style:normal;color:var(--amber);}
+.hero p{margin-top:12px;color:#c7d2f5;font-size:clamp(14px,2.4vw,17px);font-weight:400;}
+/* lưới số nền */
+.numgrid{position:absolute;inset:0;z-index:1;opacity:.06;
+  display:grid;grid-template-columns:repeat(9,1fr);align-items:center;
+  font-weight:900;font-size:62px;color:#fff;pointer-events:none;user-select:none;}
+.numgrid span{display:flex;align-items:center;justify-content:center;height:100%;}
+
+/* ===================== FORM CARD (floating) ===================== */
+.panel{background:var(--white);border:1px solid var(--line);border-radius:var(--r);
+  box-shadow:var(--shadow);}
+.form-card{margin-top:-64px;position:relative;z-index:5;padding:28px;}
+.form-card h2{font-size:19px;color:var(--navy);font-weight:800;margin-bottom:4px;}
+.form-card .lead{color:var(--muted);font-size:13.5px;margin-bottom:20px;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-weight:600;color:var(--navy);font-size:14px;margin-bottom:7px;}
+.field label i{color:#e23b3b;font-style:normal;}
+.field label small{font-weight:400;color:var(--muted);}
+.field input{width:100%;padding:13px 14px;border:1.6px solid var(--line);
+  border-radius:var(--rs);font-size:16px;font-family:inherit;color:var(--ink);
+  transition:border-color .18s,box-shadow .18s;background:#fcfdff;}
+.field input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(246,177,21,.2);background:#fff;}
+.btn{width:100%;padding:15px;border:none;border-radius:var(--rs);cursor:pointer;
+  font-family:inherit;font-size:16.5px;font-weight:800;letter-spacing:.2px;
+  background:var(--amber);color:var(--navy);transition:transform .12s,box-shadow .2s,background .2s;}
+.btn:hover{background:var(--amber-d);transform:translateY(-1px);box-shadow:0 10px 24px rgba(246,177,21,.35);}
+.btn:active{transform:translateY(0);}
+
+/* ===================== RESULTS ===================== */
+.hidden{display:none !important;}
+.results{margin-top:34px;}
+.res-head{text-align:center;margin-bottom:22px;}
+.res-head .tag{display:inline-block;background:var(--amber);color:var(--navy);
+  font-weight:700;font-size:11.5px;letter-spacing:1px;text-transform:uppercase;
+  padding:5px 16px;border-radius:999px;}
+.res-head h3{color:var(--navy);font-size:23px;font-weight:800;margin-top:10px;}
+
+/* featured Đường Đời */
+.feature{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-3) 100%);
+  color:#fff;border-radius:var(--r);padding:26px 24px;display:flex;gap:22px;align-items:center;
+  cursor:pointer;box-shadow:var(--shadow);transition:transform .18s;overflow:hidden;position:relative;}
+.feature:hover{transform:translateY(-3px);}
+.feature .fnum{font-size:74px;font-weight:900;line-height:.9;color:var(--amber);flex:none;
+  min-width:96px;text-align:center;}
+.feature .finfo .flabel{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#9fb0e6;font-weight:700;}
+.feature .finfo h4{font-size:21px;font-weight:800;margin:3px 0 6px;}
+.feature .finfo p{color:#c7d2f5;font-size:14px;}
+.feature .fcta{color:var(--amber);font-size:13px;font-weight:700;margin-top:8px;}
+
+/* grid of indices */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:13px;margin-top:13px;}
+.cell{background:#fff;border:1.6px solid var(--line);border-radius:var(--rs);
+  padding:18px 15px;text-align:center;cursor:pointer;
+  transition:transform .16s,box-shadow .16s,border-color .16s;}
+.cell:hover{transform:translateY(-3px);border-color:var(--amber);box-shadow:var(--shadow-sm);}
+.cell.master{border-color:var(--amber);background:linear-gradient(180deg,#fffdf6,#fff);}
+.cell .ctop{display:flex;align-items:center;justify-content:center;gap:6px;min-height:34px;}
+.cell .clabel{font-size:13px;font-weight:600;color:var(--navy);}
+.cell .badge{background:var(--amber);color:var(--navy);font-size:9.5px;font-weight:800;
+  padding:2px 6px;border-radius:5px;letter-spacing:.3px;}
+.cell .cnum{font-size:40px;font-weight:900;color:var(--navy);line-height:1;margin:5px 0 4px;}
+.cell .ctap{font-size:11.5px;color:var(--muted);}
+
+.hint{text-align:center;color:var(--muted);font-size:13px;margin:20px 0 0;}
+
+/* educational pythagoras table */
+.edu{margin-top:24px;}
+.edu summary{cursor:pointer;list-style:none;padding:15px 18px;background:#fff;
+  border:1px solid var(--line);border-radius:var(--rs);font-weight:700;color:var(--navy);
+  font-size:14.5px;display:flex;justify-content:space-between;align-items:center;}
+.edu summary::-webkit-details-marker{display:none;}
+.edu summary::after{content:"+";color:var(--amber);font-size:22px;font-weight:800;}
+.edu[open] summary::after{content:"–";}
+.edu .edu-body{padding:18px;background:#fff;border:1px solid var(--line);border-top:none;
+  border-radius:0 0 var(--rs) var(--rs);}
+.ptable{width:100%;border-collapse:collapse;font-size:14px;text-align:center;}
+.ptable th{background:var(--navy);color:#fff;padding:8px 4px;font-weight:700;}
+.ptable td{border:1px solid var(--line);padding:7px 4px;}
+.ptable td:first-child{background:var(--amber-soft);color:var(--navy);font-weight:800;}
+.edu p{font-size:13px;color:var(--muted);margin-top:12px;}
+
+/* CTA */
+.cta{background:var(--amber-soft);border:1px solid #f0dca0;border-radius:var(--r);
+  padding:26px;text-align:center;margin-top:26px;}
+.cta h4{color:var(--navy);font-size:18px;font-weight:800;margin-bottom:8px;}
+.cta p{color:var(--ink);font-size:14.5px;margin-bottom:16px;}
+.cta a{display:inline-block;background:var(--navy);color:#fff;text-decoration:none;
+  padding:13px 28px;border-radius:var(--rs);font-weight:700;transition:transform .12s;}
+.cta a:hover{transform:translateY(-1px);}
+
+/* ===================== MODAL ===================== */
+.modal{position:fixed;inset:0;z-index:1000;background:rgba(20,39,104,.55);
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  backdrop-filter:blur(3px);animation:fade .2s ease;}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal-box{background:#fff;border-radius:20px;max-width:580px;width:100%;
+  max-height:88vh;overflow-y:auto;position:relative;padding:30px;
+  box-shadow:0 24px 70px rgba(0,0,0,.32);animation:pop .25s cubic-bezier(.2,.8,.3,1.1);}
+@keyframes pop{from{transform:translateY(14px) scale(.98);opacity:0}to{transform:none;opacity:1}}
+.close{position:absolute;top:14px;right:16px;width:34px;height:34px;border-radius:50%;
+  border:none;background:#f1f3fb;color:var(--navy);font-size:22px;cursor:pointer;line-height:1;
+  transition:background .15s;}
+.close:hover{background:var(--amber-soft);}
+.modal-box .m-meta{color:var(--muted);font-size:13px;font-style:italic;margin:4px 0 14px;padding-right:30px;}
+.modal-box h3{color:var(--navy);font-size:21px;font-weight:800;padding-right:36px;}
+.kw{display:inline-block;background:var(--navy);color:#fff;font-weight:700;font-size:14px;
+  padding:6px 16px;border-radius:999px;margin-bottom:6px;}
+.modal-box h5{color:var(--navy);font-size:14.5px;font-weight:700;margin:16px 0 4px;}
+.modal-box p{font-size:14.5px;color:var(--ink);}
+.career{background:var(--amber-soft);border-radius:12px;padding:15px 17px;margin-top:18px;}
+.career h5{margin-top:0;}
+.career b{color:var(--navy);}
+.note{margin-top:20px;padding:14px 16px;background:var(--paper);
+  border-left:4px solid var(--amber);border-radius:8px;font-size:13px;color:var(--muted);}
+
+/* ===================== FOOTER ===================== */
+footer{background:var(--navy);color:#fff;text-align:center;padding:26px 16px;margin-top:40px;}
+.foot-badge{display:inline-block;background:#fff;border-radius:14px;padding:14px 22px;margin-bottom:14px;box-shadow:0 6px 20px rgba(0,0,0,.2);}
+.foot-badge img{width:200px;max-width:64vw;height:auto;display:block;}
+footer b{display:block;font-size:15px;font-weight:800;margin-bottom:4px;}
+footer span{font-size:12.5px;color:#c7d2f5;}
+
+/* reveal animation */
+@media (prefers-reduced-motion:no-preference){
+  .reveal{opacity:0;transform:translateY(12px);animation:rise .5s forwards;}
+  @keyframes rise{to{opacity:1;transform:none;}}
+}
+@media(max-width:560px){
+  .feature{flex-direction:column;text-align:center;gap:12px;padding:24px 18px;}
+  .feature .fnum{min-width:0;}
+  .form-card{padding:22px;}
+  .modal-box{padding:24px;}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Tra Cứu Nhân Số Học</h1>
-        <p class="subtitle">Khám phá bản thân qua các chỉ số khoa học</p>
-        
-        <form id="numerologyForm">
-            <div class="form-group">
-                <label for="fullName">Họ và Tên (Khai sinh):</label>
-                <input type="text" id="fullName" placeholder="Ví dụ: NGUYEN VAN A" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="birthDate">Ngày tháng năm sinh:</label>
-                <input type="date" id="birthDate" required>
-            </div>
 
-            <div class="form-group">
-                <label for="intentName">Tên Tác Ý (Nếu có / Không bắt buộc):</label>
-                <input type="text" id="intentName" placeholder="Ví dụ: MINH TUE">
-            </div>
-            
-            <button type="submit" id="btnSubmit">Xem Kết Quả Ngay</button>
-        </form>
+<!-- TOP BAR -->
+<div class="topbar"><div class="wrap">
+  <img class="logo" src="data:image/png;base64,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" alt="Hướng Nghiệp Alpha">
+  <div class="brand"><b>HƯỚNG NGHIỆP ALPHA</b><span>Biến ước mơ thành sự nghiệp</span></div>
+</div></div>
 
-        <!-- Khu vực hiển thị kết quả -->
-        <div id="resultSection" class="hidden">
-            <hr>
-            <h2>Bản Đồ Chỉ Số Của Bạn</h2>
-            <div class="grid-container">
-                <div class="result-card" onclick="showDetail('duongDoi')">
-                    <h3>Chỉ số Đường Đời</h3>
-                    <p class="number" id="resDuongDoi">-</p>
-                    <small>Bấm để xem chi tiết</small>
-                </div>
-                <div class="result-card" onclick="showDetail('suMenh')">
-                    <h3>Chỉ số Sứ Mệnh</h3>
-                    <p class="number" id="resSuMenh">-</p>
-                    <small>Bấm để xem chi tiết</small>
-                </div>
-                <div class="result-card" onclick="showDetail('linhHon')">
-                    <h3>Chỉ số Linh Hồn</h3>
-                    <p class="number" id="resLinhHon">-</p>
-                    <small>Bấm để xem chi tiết</small>
-                </div>
-                <div class="result-card" onclick="showDetail('nhanCach')">
-                    <h3>Chỉ số Nhân Cách</h3>
-                    <p class="number" id="resNhanCach">-</p>
-                    <small>Bấm để xem chi tiết</small>
-                </div>
-                <div class="result-card" onclick="showDetail('tenGoi')">
-                    <h3>Chỉ số Tên Gọi</h3>
-                    <p class="number" id="resTenGoi">-</p>
-                    <small>Bấm để xem chi tiết</small>
-                </div>
-                <div class="result-card" onclick="showDetail('tenTacY')">
-                    <h3>Chỉ số Tên Tác Ý</h3>
-                    <p class="number" id="resTenTacY">-</p>
-                    <small>Bấm để xem chi tiết</small>
-                </div>
-            </div>
+<!-- HERO -->
+<section class="hero">
+  <div class="numgrid" aria-hidden="true">
+    <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+    <span>3</span><span>7</span><span>1</span><span>9</span><span>5</span><span>2</span><span>8</span><span>4</span><span>6</span>
+  </div>
+  <div class="wrap">
+    <span class="eyebrow">Công cụ hiểu mình</span>
+    <h1>Nhân Số Học<br><em>Giải mã bản thân qua những con số</em></h1>
+    <p>Khám phá tính cách, thế mạnh và gợi mở hướng nghiệp cho các em học sinh</p>
+  </div>
+</section>
 
-            <!-- Modal Pop-up hiển thị nội dung luận giải giống trang mẫu -->
-            <div id="detailModal" class="modal hidden">
-                <div class="modal-content">
-                    <span class="close-btn" onclick="closeModal()">&times;</span>
-                    <h3 id="modalTitle">Tên Chỉ Số</h3>
-                    <div id="modalBody">
-                        <!-- Nội dung động chèn vào đây -->
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="wrap">
+  <!-- FORM -->
+  <div class="panel form-card">
+    <h2>Nhập thông tin để bắt đầu</h2>
+    <p class="lead">Kết quả được tính theo hệ Pythagoras. Thông tin của em không được lưu lại ở đâu.</p>
+    <form id="form">
+      <div class="field">
+        <label for="fullName">Họ và tên (theo khai sinh) <i>*</i></label>
+        <input type="text" id="fullName" placeholder="Ví dụ: Nguyễn Văn An" required autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="birthDate">Ngày tháng năm sinh <i>*</i></label>
+        <input type="date" id="birthDate" required>
+      </div>
+      <div class="field">
+        <label for="intentName">Tên tác ý / biệt danh <small>(không bắt buộc)</small></label>
+        <input type="text" id="intentName" placeholder="Tên mới muốn dùng để so sánh" autocomplete="off">
+      </div>
+      <button type="submit" class="btn">Xem bản đồ chỉ số ›</button>
+    </form>
+  </div>
+
+  <!-- RESULTS -->
+  <section id="results" class="results hidden">
+    <div class="res-head">
+      <span class="tag">Bản đồ chỉ số của</span>
+      <h3 id="nameEcho">—</h3>
     </div>
+    <div id="feature"></div>
+    <div id="grid" class="grid"></div>
+    <p class="hint">💡 Bấm vào từng ô để đọc luận giải chi tiết &amp; gợi ý hướng nghiệp.</p>
 
-    <script src="app.js"></script>
+    <details class="edu">
+      <summary>Cách tính: bảng quy đổi chữ cái Pythagoras</summary>
+      <div class="edu-body">
+        <table class="ptable">
+          <tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr>
+          <tr><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td></tr>
+          <tr><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td></tr>
+          <tr><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td></td></tr>
+        </table>
+        <p>Mỗi chữ cái ứng với một con số. Cộng dồn rồi rút gọn về 1 chữ số (1–9), giữ nguyên các Master Number 11, 22, 33. Số Đường Đời tính từ ngày sinh; các chỉ số tên tính từ họ tên khai sinh.</p>
+      </div>
+    </details>
+
+    <div class="cta">
+      <h4>Muốn đi sâu hơn cùng con?</h4>
+      <p>Nhân số học chỉ là một mảnh ghép. Tại HNA, con số được kết hợp với <b>Holland RIASEC</b> và <b>Trí thông minh đa dạng (Gardner)</b> để xây dựng lộ trình hướng nghiệp cá nhân hóa.</p>
+      <a href="https://www.huongnghiepalpha.vn" target="_blank" rel="noopener">Đặt lịch tư vấn cùng HNA ›</a>
+    </div>
+  </section>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal hidden">
+  <div class="modal-box">
+    <button class="close" onclick="closeModal()" aria-label="Đóng">×</button>
+    <h3 id="mTitle">Chỉ số</h3>
+    <div id="mBody"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-badge"><img src="data:image/png;base64,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" alt="Hướng Nghiệp Alpha — Biến ước mơ thành sự nghiệp"></div>
+  <b>Hướng Nghiệp Alpha</b>
+  <span>Hotline: 096 937 4411 &nbsp;|&nbsp; Email: huongnghiepalpha@gmail.com &nbsp;|&nbsp; www.huongnghiepalpha.vn</span>
+</footer>
+
+<script>
+/* ============== DATA (HNA biên soạn) ============== */
+/* ============================================================
+   KHO LUẬN GIẢI NHÂN SỐ HỌC — HƯỚNG NGHIỆP ALPHA
+   Nội dung do HNA biên soạn (văn phong gốc), lồng góc hướng nghiệp
+   theo mô hình Holland RIASEC cho học sinh THPT (GDPT 2018).
+   Công thức: Pythagoras (kiến thức nền chung).
+   ============================================================ */
+
+const NS = {
+
+  /* ---------- META: mô tả từng loại chỉ số ---------- */
+  meta: {
+    duongDoi:  { ten: "Số Đường Đời",  mota: "Tính từ ngày sinh — con đường lớn và bài học cốt lõi của cả đời. Quan trọng nhất khi định hướng nghề." },
+    suMenh:    { ten: "Số Sứ Mệnh",    mota: "Tính từ toàn bộ họ tên khai sinh — tài năng bẩm sinh và cách em đóng góp cho thế giới." },
+    linhHon:   { ten: "Số Linh Hồn",   mota: "Tính từ các nguyên âm trong tên — khát khao sâu thẳm, điều khiến em thấy hạnh phúc thật sự." },
+    nhanCach:  { ten: "Số Nhân Cách",  mota: "Tính từ các phụ âm trong tên — ấn tượng đầu tiên người khác cảm nhận về em." },
+    ngaySinh:  { ten: "Số Ngày Sinh",  mota: "Tính từ ngày trong tháng — một năng khiếu trời cho mà em mang theo từ nhỏ." },
+    truongThanh:{ ten: "Số Trưởng Thành", mota: "Đường Đời + Sứ Mệnh — phiên bản chín chắn của em, rõ dần sau tuổi 30." },
+    tenTacY:   { ten: "Tên Tác Ý",     mota: "Năng lượng của một cái tên mới (biệt danh / tên muốn dùng) để so sánh với tên gốc." }
+  },
+
+  /* ---------- SỐ ĐƯỜNG ĐỜI (kèm hướng nghiệp Holland) ---------- */
+  duongDoi: {
+    1: { kw:"Người tiên phong",
+      core:"Em sinh ra để dẫn đầu, để bắt đầu những thứ chưa ai làm. Bên trong em luôn có một động cơ muốn tự quyết, không thích bị dắt tay.",
+      strength:"Độc lập, quyết đoán, dám chịu trách nhiệm, có sáng kiến và ý chí mạnh.",
+      challenge:"Dễ bướng và ngại nhờ vả. Bài học lớn nhất là học cách lắng nghe và hợp tác thay vì 'một mình một ngựa'.",
+      career:"Hợp vai trò khởi xướng, làm chủ. Nhóm Holland nổi trội: <b>E (Quản lý)</b> và <b>I (Nghiên cứu)</b>. Gợi ý: khởi nghiệp, quản trị kinh doanh, lãnh đạo dự án, kỹ sư trưởng." },
+    2: { kw:"Người kết nối",
+      core:"Em nhạy cảm với cảm xúc người khác và giỏi làm cầu nối. Em mạnh khi đứng cạnh hỗ trợ, không nhất thiết phải đứng giữa sân khấu.",
+      strength:"Tinh tế, kiên nhẫn, hợp tác tốt, biết lắng nghe và hòa giải.",
+      challenge:"Dễ tự ti, ngại va chạm, hay nhường nhịn đến mức quên mình. Cần học cách nói 'không'.",
+      career:"Hợp môi trường cần sự đồng cảm và phối hợp. Nhóm Holland: <b>S (Xã hội)</b> và <b>A (Nghệ thuật)</b>. Gợi ý: tâm lý, nhân sự, công tác xã hội, ngoại giao, điều dưỡng, giáo viên." },
+    3: { kw:"Người truyền cảm hứng",
+      core:"Em có nguồn sáng tạo và năng lượng biểu đạt dồi dào. Em thấy sống động nhất khi được nói, viết, vẽ, biểu diễn — được lan tỏa.",
+      strength:"Sáng tạo, lạc quan, giao tiếp duyên dáng, truyền năng lượng tích cực.",
+      challenge:"Dễ phân tán, làm nhiều thứ một lúc rồi bỏ dở. Cần kỷ luật để đi tới cùng.",
+      career:"Hợp nghề cần sáng tạo và ngôn từ. Nhóm Holland: <b>A (Nghệ thuật)</b> và <b>S (Xã hội)</b>. Gợi ý: truyền thông, marketing, thiết kế, báo chí, sân khấu, sáng tạo nội dung." },
+    4: { kw:"Người xây nền",
+      core:"Em là người làm thật, chắc và bền. Em tin vào kỷ luật, quy trình và sự kiên trì hơn là may rủi.",
+      strength:"Chăm chỉ, đáng tin, có tổ chức, làm việc chi tiết và đến nơi đến chốn.",
+      challenge:"Đôi khi quá cứng nhắc, ngại thay đổi. Cần học sự linh hoạt và cho phép mình nghỉ ngơi.",
+      career:"Hợp nghề cần độ chính xác và hệ thống. Nhóm Holland: <b>C (Nghiệp vụ)</b> và <b>R (Kỹ thuật)</b>. Gợi ý: kế toán, kiểm toán, kỹ thuật, xây dựng, logistics, quản lý dữ liệu." },
+    5: { kw:"Người tự do",
+      core:"Em khát khao trải nghiệm, di chuyển và thay đổi. Sự gò bó làm em ngộp; sự mới mẻ làm em sống.",
+      strength:"Linh hoạt, thích nghi nhanh, can đảm thử cái mới, giỏi giao tiếp đa dạng.",
+      challenge:"Dễ cả thèm chóng chán, thiếu kiên định. Cần học cách cam kết với mục tiêu dài hạn.",
+      career:"Hợp nghề năng động, hay di chuyển. Nhóm Holland: <b>E (Quản lý)</b> và <b>A (Nghệ thuật)</b>. Gợi ý: du lịch, kinh doanh quốc tế, truyền thông, hướng dẫn viên, sự kiện, ngoại thương." },
+    6: { kw:"Người chăm sóc",
+      core:"Em sống vì trách nhiệm và tình thương. Em thấy ý nghĩa khi chăm lo cho gia đình, cộng đồng và những người yếu thế.",
+      strength:"Ấm áp, có trách nhiệm, đáng tin cậy, giỏi tạo cảm giác an toàn cho người khác.",
+      challenge:"Dễ ôm việc, hy sinh quá mức và can thiệp đời người khác. Cần học cách buông và yêu thương cả bản thân.",
+      career:"Hợp nghề chữa lành và phục vụ con người. Nhóm Holland: <b>S (Xã hội)</b> và <b>I (Nghiên cứu)</b>. Gợi ý: y khoa, điều dưỡng, sư phạm, tâm lý, dinh dưỡng, công tác xã hội." },
+    7: { kw:"Người tìm chân lý",
+      core:"Em có chiều sâu nội tâm và khát khao hiểu bản chất mọi thứ. Em cần thời gian một mình để suy ngẫm.",
+      strength:"Tư duy phân tích sắc bén, tự học giỏi, trực giác mạnh, độc lập về suy nghĩ.",
+      challenge:"Dễ khép kín, hoài nghi, khó chia sẻ cảm xúc. Cần học cách tin tưởng và kết nối.",
+      career:"Hợp nghề nghiên cứu và chuyên môn sâu. Nhóm Holland: <b>I (Nghiên cứu)</b> và <b>R (Kỹ thuật)</b>. Gợi ý: khoa học, công nghệ thông tin, nghiên cứu, phân tích dữ liệu, y sinh, triết học." },
+    8: { kw:"Người kiến tạo giá trị",
+      core:"Em có bản năng về quyền lực, tiền bạc và tầm vóc. Em muốn xây dựng những thứ lớn và để lại dấu ấn rõ ràng.",
+      strength:"Tham vọng lành mạnh, giỏi tổ chức nguồn lực, bản lĩnh, nhìn được bức tranh lớn.",
+      challenge:"Dễ cuốn theo vật chất và kiểm soát. Cần học sự cân bằng và cho đi.",
+      career:"Hợp vai trò điều hành và tài chính. Nhóm Holland: <b>E (Quản lý)</b> và <b>C (Nghiệp vụ)</b>. Gợi ý: quản trị, tài chính – ngân hàng, đầu tư, luật kinh tế, kinh doanh, bất động sản." },
+    9: { kw:"Người lý tưởng",
+      core:"Em sống vì điều lớn hơn bản thân. Em giàu lòng trắc ẩn và muốn thế giới này tốt đẹp hơn nhờ có em.",
+      strength:"Bao dung, nhân ái, có tầm nhìn rộng, dễ truyền cảm hứng và cảm thông.",
+      challenge:"Dễ lý tưởng hóa và thất vọng khi thực tế phũ phàng. Cần học cách thực tế và đặt ranh giới.",
+      career:"Hợp nghề phụng sự và sáng tạo có ý nghĩa. Nhóm Holland: <b>S (Xã hội)</b> và <b>A (Nghệ thuật)</b>. Gợi ý: giáo dục, y tế cộng đồng, hoạt động xã hội, nghệ thuật, môi trường, ngoại giao." },
+    11:{ kw:"Người dẫn đường tinh thần (Master 11)",
+      core:"Em mang năng lượng số 2 được nâng lên — nhạy bén, trực giác mạnh và một sứ mệnh truyền cảm hứng cho người khác bằng ánh sáng nội tâm.",
+      strength:"Trực giác xuất sắc, nhạy cảm tinh tế, có sức ảnh hưởng và chiều sâu tâm hồn.",
+      challenge:"Mang áp lực lớn, dễ căng thẳng và lo âu. Cần học cách neo mình vào thực tế và chăm sóc tinh thần.",
+      career:"Hợp nghề cần cảm hứng và kết nối con người. Nhóm Holland: <b>A (Nghệ thuật)</b> và <b>S (Xã hội)</b>. Gợi ý: tâm lý, giáo dục, nghệ thuật, truyền cảm hứng, tư vấn, nghiên cứu nhân văn." },
+    22:{ kw:"Bậc thầy kiến tạo (Master 22)",
+      core:"Em mang năng lượng số 4 được nâng lên — khả năng biến giấc mơ lớn thành công trình thực tế có ích cho nhiều người.",
+      strength:"Vừa có tầm nhìn của người mơ mộng, vừa có khả năng thực thi của người thực tế. Hiếm và mạnh.",
+      challenge:"Áp lực 'phải làm điều vĩ đại' rất nặng. Cần kiên nhẫn và đi từng bước.",
+      career:"Hợp vai trò xây dựng quy mô lớn. Nhóm Holland: <b>E (Quản lý)</b> và <b>R (Kỹ thuật)</b>. Gợi ý: kiến trúc, kỹ thuật quy mô lớn, quản trị dự án, chính sách công, doanh nghiệp xã hội." },
+    33:{ kw:"Bậc thầy yêu thương (Master 33)",
+      core:"Em mang năng lượng số 6 được nâng lên — sứ mệnh chữa lành và nâng đỡ cộng đồng bằng tình thương vô điều kiện.",
+      strength:"Lòng từ bi lớn, khả năng truyền cảm hứng và chăm sóc ở quy mô rộng.",
+      challenge:"Dễ kiệt sức vì cho đi quá nhiều. Cần học cách giữ năng lượng cho chính mình.",
+      career:"Hợp nghề giáo dục và chữa lành. Nhóm Holland: <b>S (Xã hội)</b>. Gợi ý: giáo dục, y khoa, tâm lý trị liệu, công tác cộng đồng, lãnh đạo phụng sự." }
+  },
+
+  /* ---------- SỐ SỨ MỆNH ---------- */
+  suMenh: {
+    1:{kw:"Lãnh đạo",core:"Tài năng của em là khởi xướng và dẫn dắt. Em được trao khả năng đi đầu và tạo ra cái mới.",strength:"Tự chủ, sáng kiến, bản lĩnh.",challenge:"Tránh độc đoán; học cách trao quyền."},
+    2:{kw:"Hợp tác",core:"Tài năng của em là kết nối và làm việc nhóm. Em tỏa sáng khi giúp một tập thể vận hành hài hòa.",strength:"Ngoại giao, đồng cảm, tỉ mỉ.",challenge:"Đừng đánh mất chính kiến vì sợ mất lòng."},
+    3:{kw:"Biểu đạt",core:"Tài năng của em nằm ở ngôn từ và sáng tạo. Em sinh ra để truyền cảm hứng và làm đẹp cho đời.",strength:"Sáng tạo, giao tiếp, lạc quan.",challenge:"Tập trung và đi đến cùng một việc."},
+    4:{kw:"Xây dựng",core:"Tài năng của em là tạo ra những thứ vững chắc và có hệ thống. Em là người biến ý tưởng thành nền móng.",strength:"Kỷ luật, chính xác, bền bỉ.",challenge:"Mềm dẻo hơn, đừng quá cầu toàn."},
+    5:{kw:"Khai phá",core:"Tài năng của em là thích nghi và truyền năng lượng đổi mới. Em mang đến tự do và sự linh hoạt.",strength:"Năng động, đa năng, can đảm.",challenge:"Giữ cam kết, tránh hời hợt."},
+    6:{kw:"Phụng sự",core:"Tài năng của em là chăm sóc và tạo dựng tổ ấm, cộng đồng. Em mang lại sự an toàn cho người khác.",strength:"Trách nhiệm, ấm áp, tận tụy.",challenge:"Học cách không ôm hết mọi việc."},
+    7:{kw:"Khám phá tri thức",core:"Tài năng của em là tìm hiểu sâu và phát hiện sự thật ẩn sau bề mặt.",strength:"Phân tích, trực giác, chuyên sâu.",challenge:"Mở lòng và chia sẻ nhiều hơn."},
+    8:{kw:"Quản trị",core:"Tài năng của em là tổ chức nguồn lực và tạo ra giá trị vật chất, tầm vóc lớn.",strength:"Bản lĩnh, tổ chức, tầm nhìn.",challenge:"Cân bằng giữa thành tựu và con người."},
+    9:{kw:"Cống hiến",core:"Tài năng của em là phụng sự điều lớn lao và lan tỏa lòng nhân ái.",strength:"Bao dung, tầm nhìn, truyền cảm hứng.",challenge:"Thực tế hơn, biết đặt ranh giới."},
+    11:{kw:"Truyền cảm hứng (Master)",core:"Sứ mệnh nâng cấp: dùng trực giác và ánh sáng nội tâm để soi đường cho người khác.",strength:"Trực giác, ảnh hưởng, chiều sâu.",challenge:"Neo vào thực tế, giữ sự bình ổn."},
+    22:{kw:"Kiến tạo lớn (Master)",core:"Sứ mệnh nâng cấp: hiện thực hóa những công trình lớn phục vụ số đông.",strength:"Tầm nhìn + thực thi.",challenge:"Kiên nhẫn, đi từng bước chắc."},
+    33:{kw:"Người thầy yêu thương (Master)",core:"Sứ mệnh nâng cấp: chữa lành và nâng đỡ cộng đồng bằng tình thương.",strength:"Từ bi, dẫn dắt, phụng sự.",challenge:"Giữ năng lượng, tránh kiệt sức."}
+  },
+
+  /* ---------- SỐ LINH HỒN ---------- */
+  linhHon: {
+    1:{kw:"Khao khát độc lập",core:"Sâu thẳm bên trong, em muốn được tự chủ, được công nhận là người dẫn đầu và làm theo cách của mình.",strength:"Ý chí mạnh, tự tin.",challenge:"Học cách dựa vào người khác mà không thấy yếu đuối."},
+    2:{kw:"Khao khát yêu thương & bình yên",core:"Em hạnh phúc nhất khi được yêu thương, được ở trong một mối quan hệ hòa hợp và một tập thể đoàn kết.",strength:"Dịu dàng, thấu cảm.",challenge:"Đừng phụ thuộc cảm xúc vào người khác."},
+    3:{kw:"Khao khát được thể hiện",core:"Em thấy thỏa mãn khi được bày tỏ, được sáng tạo và được người khác đón nhận ý tưởng của mình.",strength:"Vui tươi, giàu cảm hứng.",challenge:"Tránh tìm kiếm sự công nhận quá mức."},
+    4:{kw:"Khao khát ổn định",core:"Em mong muốn một cuộc sống chắc chắn, an toàn và có trật tự rõ ràng về công việc, tài chính, gia đình.",strength:"Vững vàng, đáng tin.",challenge:"Cho phép mình thử điều mới."},
+    5:{kw:"Khao khát tự do",core:"Em khát khao được trải nghiệm, đi đây đó và không bị trói buộc vào khuôn khổ.",strength:"Phóng khoáng, can đảm.",challenge:"Tìm tự do trong sự cam kết, không chạy trốn."},
+    6:{kw:"Khao khát được chăm lo",core:"Em hạnh phúc khi được yêu thương và chăm sóc người khác, được làm điểm tựa cho gia đình.",strength:"Ấm áp, trách nhiệm.",challenge:"Yêu thương bản thân trước đã."},
+    7:{kw:"Khao khát hiểu biết",core:"Em khát khao sự thật, chiều sâu và những khoảng lặng để chiêm nghiệm về cuộc đời.",strength:"Sâu sắc, độc lập.",challenge:"Mở lòng để không cô đơn."},
+    8:{kw:"Khao khát thành tựu",core:"Em mong muốn được thành công, có tầm ảnh hưởng và làm chủ cuộc đời mình về vật chất lẫn vị thế.",strength:"Tham vọng, bản lĩnh.",challenge:"Đo giá trị bằng cả những thứ không phải vật chất."},
+    9:{kw:"Khao khát phụng sự",core:"Em thấy ý nghĩa khi được cho đi, giúp đỡ và sống vì một lý tưởng lớn hơn bản thân.",strength:"Nhân ái, lý tưởng.",challenge:"Nhận lại, không chỉ cho đi."},
+    11:{kw:"Khao khát ý nghĩa tinh thần (Master)",core:"Sâu bên trong, em muốn sống có ánh sáng và nâng đỡ người khác bằng trực giác, cảm hứng.",strength:"Nội tâm sâu, nhạy cảm.",challenge:"Giữ thăng bằng cảm xúc."},
+    22:{kw:"Khao khát kiến tạo (Master)",core:"Em khát khao xây nên điều gì đó lớn lao và bền vững để lại cho đời.",strength:"Vừa mơ vừa làm.",challenge:"Đừng để áp lực đè bẹp."}
+  },
+
+  /* ---------- SỐ NHÂN CÁCH ---------- */
+  nhanCach: {
+    1:{kw:"Mạnh mẽ & độc lập",core:"Người khác nhìn em như một người tự tin, có chính kiến và dáng vẻ của người lãnh đạo.",strength:"Khí chất, quyết đoán.",challenge:"Đôi khi trông hơi xa cách."},
+    2:{kw:"Dịu dàng & dễ gần",core:"Em tạo cảm giác hiền hòa, tinh tế và đáng tin để người khác dễ mở lòng.",strength:"Ấm áp, lịch thiệp.",challenge:"Đừng để bị xem là nhu nhược."},
+    3:{kw:"Vui vẻ & cuốn hút",core:"Em toát ra năng lượng tươi sáng, hài hước và có duyên trong giao tiếp.",strength:"Thu hút, lạc quan.",challenge:"Tránh bị xem là hời hợt."},
+    4:{kw:"Chững chạc & đáng tin",core:"Em cho người khác cảm giác nghiêm túc, chắc chắn và có kỷ luật.",strength:"Đáng tin, vững vàng.",challenge:"Thả lỏng để gần gũi hơn."},
+    5:{kw:"Năng động & tự do",core:"Em trông cá tính, linh hoạt và đầy năng lượng phiêu lưu.",strength:"Cuốn hút, sống động.",challenge:"Tạo cảm giác ổn định hơn cho người khác."},
+    6:{kw:"Ấm áp & trách nhiệm",core:"Em toát ra sự đáng tin, dễ chịu và khiến người khác thấy được chở che.",strength:"Hòa nhã, có trách nhiệm.",challenge:"Đừng ôm việc của người khác."},
+    7:{kw:"Bí ẩn & sâu sắc",core:"Em tạo ấn tượng trầm tĩnh, thông thái và hơi khó đoán.",strength:"Sâu sắc, điềm tĩnh.",challenge:"Mở lòng để bớt xa cách."},
+    8:{kw:"Bản lĩnh & uy tín",core:"Em toát ra phong thái của người có năng lực và đáng nể trọng.",strength:"Uy tín, mạnh mẽ.",challenge:"Mềm mại hơn để dễ gần."},
+    9:{kw:"Nhân hậu & rộng lượng",core:"Em cho người khác cảm giác bao dung, lịch lãm và có chiều sâu nhân văn.",strength:"Cao thượng, ấm áp.",challenge:"Đừng để bị xem là xa vời."},
+    11:{kw:"Tỏa sáng & truyền cảm hứng (Master)",core:"Em mang một sức hút đặc biệt, khiến người khác cảm thấy được nâng đỡ.",strength:"Lôi cuốn, nhạy bén.",challenge:"Giữ sự cân bằng nội tâm."},
+    22:{kw:"Vững chãi & tầm vóc (Master)",core:"Em toát ra phong thái của người vừa thực tế vừa có tầm nhìn lớn.",strength:"Đáng tin, có chiều sâu.",challenge:"Đừng tự tạo áp lực quá lớn."}
+  },
+
+  /* ---------- SỐ NGÀY SINH (năng khiếu trời cho) ---------- */
+  ngaySinh: {
+    1:{kw:"Năng khiếu lãnh đạo",core:"Em có sẵn bản năng tự chủ và dẫn đầu từ nhỏ.",strength:"Độc lập, sáng kiến.",challenge:"Học cách hợp tác."},
+    2:{kw:"Năng khiếu kết nối",core:"Em nhạy cảm và giỏi làm hòa, được trời cho sự tinh tế.",strength:"Đồng cảm, ngoại giao.",challenge:"Tự tin hơn."},
+    3:{kw:"Năng khiếu sáng tạo",core:"Em có khiếu ngôn từ, nghệ thuật và làm người khác vui.",strength:"Sáng tạo, hoạt ngôn.",challenge:"Kỷ luật hơn."},
+    4:{kw:"Năng khiếu tổ chức",core:"Em có sẵn sự ngăn nắp, chăm chỉ và làm việc chắc chắn.",strength:"Tỉ mỉ, bền bỉ.",challenge:"Linh hoạt hơn."},
+    5:{kw:"Năng khiếu thích nghi",core:"Em học nhanh, dạn dĩ và thích khám phá điều mới.",strength:"Linh hoạt, can đảm.",challenge:"Kiên định hơn."},
+    6:{kw:"Năng khiếu chăm sóc",core:"Em có sẵn lòng trách nhiệm và sự ấm áp với mọi người.",strength:"Tận tụy, đáng tin.",challenge:"Biết buông bớt."},
+    7:{kw:"Năng khiếu tư duy",core:"Em có khả năng phân tích và chiều sâu suy nghĩ hơn bạn bè cùng tuổi.",strength:"Sắc bén, trực giác.",challenge:"Cởi mở hơn."},
+    8:{kw:"Năng khiếu tổ chức nguồn lực",core:"Em có bản năng về tổ chức, quản lý và nhìn bức tranh lớn.",strength:"Bản lĩnh, thực tế.",challenge:"Cân bằng cảm xúc."},
+    9:{kw:"Năng khiếu nhân ái",core:"Em giàu lòng trắc ẩn và quan tâm điều lớn lao từ sớm.",strength:"Bao dung, lý tưởng.",challenge:"Thực tế hơn."},
+    11:{kw:"Trực giác đặc biệt (Master)",core:"Em có trực giác và sự nhạy cảm vượt trội cần được nuôi dưỡng.",strength:"Nhạy bén, sâu sắc.",challenge:"Giữ ổn định tinh thần."},
+    22:{kw:"Tiềm năng kiến tạo (Master)",core:"Em mang tiềm năng biến ý tưởng lớn thành hiện thực.",strength:"Tầm nhìn + thực thi.",challenge:"Kiên nhẫn từng bước."}
+  },
+
+  /* ---------- SỐ TRƯỞNG THÀNH ---------- */
+  truongThanh: {
+    1:{kw:"Hướng tới sự độc lập",core:"Càng trưởng thành, em càng được kêu gọi đứng ra dẫn dắt và tự quyết cuộc đời mình."},
+    2:{kw:"Hướng tới sự hợp tác",core:"Phiên bản chín chắn của em tỏa sáng trong vai trò kết nối, cố vấn và làm chỗ dựa."},
+    3:{kw:"Hướng tới sự sáng tạo",core:"Về sau em tìm thấy niềm vui và thành tựu trong biểu đạt, sáng tạo và truyền cảm hứng."},
+    4:{kw:"Hướng tới sự vững chắc",core:"Trưởng thành rồi, em xây dựng những nền tảng bền vững và trở thành điểm tựa đáng tin."},
+    5:{kw:"Hướng tới sự tự do",core:"Phiên bản chín chắn của em sống linh hoạt, trải nghiệm rộng và truyền năng lượng đổi mới."},
+    6:{kw:"Hướng tới sự phụng sự",core:"Về sau em trở thành người chăm lo cho gia đình và cộng đồng một cách trọn vẹn."},
+    7:{kw:"Hướng tới sự minh triết",core:"Trưởng thành rồi, em đi sâu vào tri thức, tâm linh và trở nên thông thái, an nhiên."},
+    8:{kw:"Hướng tới sự thành tựu",core:"Phiên bản chín chắn của em làm chủ nguồn lực và tạo ra giá trị, tầm vóc rõ ràng."},
+    9:{kw:"Hướng tới sự cống hiến",core:"Về sau em sống vì lý tưởng lớn, lan tỏa lòng nhân ái và để lại di sản nhân văn."},
+    11:{kw:"Hướng tới ánh sáng dẫn đường (Master)",core:"Trưởng thành rồi, em trở thành nguồn cảm hứng và điểm tựa tinh thần cho người khác."},
+    22:{kw:"Hướng tới công trình lớn (Master)",core:"Phiên bản chín chắn của em kiến tạo những điều lớn lao phục vụ cộng đồng."},
+    33:{kw:"Hướng tới tình thương lớn (Master)",core:"Về sau em chữa lành và nâng đỡ cộng đồng bằng tình thương vô điều kiện."}
+  }
+};
+
+/* Lời nhắc nhân văn — luôn hiển thị cuối mỗi luận giải */
+const NS_NOTE = "Nhân số học là một công cụ <b>gợi mở để hiểu mình</b>, không phải lời tiên tri. Mỗi con người luôn lớn hơn một con số. Hãy dùng nó như một điểm khởi đầu để trò chuyện, suy ngẫm và khám phá — rồi tự mình viết tiếp câu chuyện.";
+
+/* ============== ENGINE + RENDER ============== */
+const MAP={A:1,J:1,S:1,B:2,K:2,T:2,C:3,L:3,U:3,D:4,M:4,V:4,E:5,N:5,W:5,F:6,O:6,X:6,G:7,P:7,Y:7,H:8,Q:8,Z:8,I:9,R:9};
+const VOW=['A','E','I','O','U'];
+const clean=s=>(s||'').toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/Đ/g,"D").replace(/[^A-Z\s]/g,"");
+function reduce(n,keep=true){while(n>9){if(keep&&(n===11||n===22||n===33))return n;n=String(n).split('').reduce((a,d)=>a+parseInt(d,10),0);}return n;}
+function lifePath(y,m,d){const rd=reduce(d),rm=reduce(m),ry=reduce(String(y).split('').reduce((a,c)=>a+parseInt(c,10),0));return reduce(rd+rm+ry);}
+function analyzeName(s){const w=clean(s).trim().split(/\s+/).filter(Boolean);let t=0,v=0,c=0;
+  for(const word of w){for(let i=0;i<word.length;i++){const ch=word[i],val=MAP[ch]||0;t+=val;
+    let iv=VOW.includes(ch);
+    if(ch==='Y'){iv=(i===0||!VOW.includes(word[i-1]))&&(i===word.length-1||!VOW.includes(word[i+1]));}
+    if(iv)v+=val;else c+=val;}}
+  return{suMenh:reduce(t),linhHon:reduce(v),nhanCach:reduce(c)};}
+
+let R={}, NAME="";
+
+document.getElementById('form').addEventListener('submit',function(e){
+  e.preventDefault();
+  const fullName=document.getElementById('fullName').value.trim();
+  const bd=document.getElementById('birthDate').value;
+  const intent=document.getElementById('intentName').value.trim();
+  if(!fullName||!bd)return;
+  NAME=fullName;
+  const [yy,mm,dd]=bd.split('-').map(Number);
+  const nm=analyzeName(fullName);
+  const dl=lifePath(yy,mm,dd);
+  R={duongDoi:dl,suMenh:nm.suMenh,linhHon:nm.linhHon,nhanCach:nm.nhanCach,
+     ngaySinh:reduce(dd),truongThanh:reduce(dl+nm.suMenh),
+     tenTacY:intent?analyzeName(intent).suMenh:null};
+  render();
+  const sec=document.getElementById('results');
+  sec.classList.remove('hidden');
+  sec.scrollIntoView({behavior:'smooth',block:'start'});
+});
+
+function isMaster(n){return n===11||n===22||n===33;}
+
+function render(){
+  document.getElementById('nameEcho').textContent='“'+NAME+'”';
+  // featured Đường Đời
+  const d=R.duongDoi, fd=NS.duongDoi[d]||{};
+  document.getElementById('feature').innerHTML=
+    '<div class="feature reveal" onclick="showDetail(\'duongDoi\')">'+
+      '<div class="fnum">'+d+'</div>'+
+      '<div class="finfo"><div class="flabel">Số Đường Đời'+(isMaster(d)?' · Master':'')+'</div>'+
+      '<h4>'+(fd.kw||'')+'</h4>'+
+      '<p>'+(function(t){t=(t||'').replace(/<[^>]+>/g,'');return t.length>112?t.slice(0,112)+'…':t;})(fd.core)+'</p>'+
+      '<div class="fcta">Bấm để xem luận giải đầy đủ ›</div></div></div>';
+  // grid (các chỉ số còn lại)
+  const order=['suMenh','linhHon','nhanCach','ngaySinh','truongThanh'];
+  if(R.tenTacY!==null)order.push('tenTacY');
+  const grid=document.getElementById('grid');grid.innerHTML='';
+  order.forEach((k,i)=>{
+    const n=R[k],meta=NS.meta[k],m=isMaster(n);
+    const el=document.createElement('div');
+    el.className='cell reveal'+(m?' master':'');
+    el.style.animationDelay=(0.05*(i+1))+'s';
+    el.onclick=()=>showDetail(k);
+    el.innerHTML='<div class="ctop"><span class="clabel">'+meta.ten+'</span>'+
+      (m?'<span class="badge">Master</span>':'')+'</div>'+
+      '<div class="cnum">'+n+'</div><div class="ctap">Xem chi tiết ›</div>';
+    grid.appendChild(el);
+  });
+}
+
+function showDetail(key){
+  const n=R[key],meta=NS.meta[key],data=(NS[key]&&NS[key][n])?NS[key][n]:null;
+  let h='<p class="m-meta">'+meta.mota+'</p>';
+  if(data){
+    if(data.kw)h+='<div class="kw">'+data.kw+'</div>';
+    if(data.core)h+='<h5>Năng lượng cốt lõi</h5><p>'+data.core+'</p>';
+    if(data.strength)h+='<h5>Điểm mạnh</h5><p>'+data.strength+'</p>';
+    if(data.challenge)h+='<h5>Bài học cần lưu ý</h5><p>'+data.challenge+'</p>';
+    if(data.career)h+='<div class="career"><h5>🎯 Gợi ý hướng nghiệp</h5><p>'+data.career+'</p></div>';
+  }else{h+='<p>Nội dung luận giải cho con số này đang được HNA cập nhật thêm.</p>';}
+  h+='<div class="note">'+NS_NOTE+'</div>';
+  document.getElementById('mTitle').textContent=meta.ten+' — Số '+n;
+  document.getElementById('mBody').innerHTML=h;
+  document.getElementById('modal').classList.remove('hidden');
+}
+function closeModal(){document.getElementById('modal').classList.add('hidden');}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
 </body>
 </html>
